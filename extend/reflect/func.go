@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
-	cstring "superplace/ex/string"
+	cstring "superplace/extend/string"
 	cerr "superplace/logger/error"
 )
 
