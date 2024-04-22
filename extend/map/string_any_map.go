@@ -6,7 +6,7 @@ import (
 	"sync"
 	"unsafe"
 
-	cutils "superplace/ex/utils"
+	cutils "superplace/extend/utils"
 )
 
 type StringAnyMap struct {

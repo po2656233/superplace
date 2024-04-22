@@ -1,7 +1,7 @@
 package exSnowflake
 
 import (
-	ccrypto "superplace/ex/crypto"
+	ccrypto "superplace/extend/crypto"
 	clog "superplace/logger"
 )
 

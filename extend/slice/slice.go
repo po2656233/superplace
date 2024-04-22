@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	cstring "superplace/ex/string"
-	cutils "superplace/ex/utils"
+	cstring "superplace/extend/string"
+	cutils "superplace/extend/utils"
 )
 
 func Int32In(v int32, sl []int32) (int, bool) {

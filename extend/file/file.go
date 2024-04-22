@@ -9,7 +9,7 @@ import (
 	"strings"
 	cerr "superplace/logger/error"
 
-	cslice "superplace/ex/slice"
+	cslice "superplace/extend/slice"
 )
 
 func JudgeFile(filePath string) (string, bool) {
