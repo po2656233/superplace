@@ -39,11 +39,3 @@ var (
 	PlayerNotLogin           int32 = 305 // 玩家未登录
 	PlayerIdError            int32 = 306 // 玩家id错误
 )
-
-func IsOK(code int32) bool {
-	return code == OK
-}
-
-func IsFail(code int32) bool {
-	return code != OK
-}

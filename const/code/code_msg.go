@@ -4,10 +4,6 @@ import (
 	"sync"
 )
 
-const (
-	emptyMsg = ""
-)
-
 var (
 	lock       = &sync.RWMutex{}
 	resultMaps = make(map[int32]string)
@@ -31,5 +27,13 @@ func GetMessage(code int32) string {
 		return msg
 	}
 
-	return emptyMsg
+	return ""
+}
+
+func IsOK(code int32) bool {
+	return code == OK
+}
+
+func IsFail(code int32) bool {
+	return code != OK
 }
