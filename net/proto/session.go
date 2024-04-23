@@ -1,8 +1,8 @@
 package cherryProto
 
 import (
-	cconst "github/po2656233/superplace/const"
-	cstring "github/po2656233/superplace/extend/string"
+	cconst "github.com/po2656233/superplace/const"
+	cstring "github.com/po2656233/superplace/extend/string"
 )
 
 func (x *Session) IsBind() bool {

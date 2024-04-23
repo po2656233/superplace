@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"io"
 	"net"
-	cerr "github/po2656233/superplace/logger/error"
+	cerr "github.com/po2656233/superplace/logger/error"
 )
 
 var (

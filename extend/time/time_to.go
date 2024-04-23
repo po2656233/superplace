@@ -3,7 +3,7 @@ package exTime
 import (
 	"time"
 
-	cstring "github/po2656233/superplace/extend/string"
+	cstring "github.com/po2656233/superplace/extend/string"
 )
 
 // ToSecond 输出秒级时间戳

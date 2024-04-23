@@ -7,10 +7,10 @@ import (
 
 	"github.com/nats-io/nuid"
 	"go.uber.org/zap/zapcore"
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
-	cactor "github/po2656233/superplace/net/actor"
-	cproto "github/po2656233/superplace/net/proto"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cactor "github.com/po2656233/superplace/net/actor"
+	cproto "github.com/po2656233/superplace/net/proto"
 )
 
 type (

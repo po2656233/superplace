@@ -1,9 +1,9 @@
 package simple
 
 import (
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
-	cproto "github/po2656233/superplace/net/proto"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cproto "github.com/po2656233/superplace/net/proto"
 )
 
 var (

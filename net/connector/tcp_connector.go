@@ -1,8 +1,8 @@
 package extendConnector
 
 import (
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type (

@@ -1,15 +1,15 @@
 package cherryDiscovery
 
 import (
-	cerr "github/po2656233/superplace/logger/error"
+	cerr "github.com/po2656233/superplace/logger/error"
 	"math/rand"
 	"sync"
 
-	cprofile "github/po2656233/superplace/config"
-	cslice "github/po2656233/superplace/extend/slice"
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
-	cproto "github/po2656233/superplace/net/proto"
+	cprofile "github.com/po2656233/superplace/config"
+	cslice "github.com/po2656233/superplace/extend/slice"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cproto "github.com/po2656233/superplace/net/proto"
 )
 
 // DiscoveryDefault 默认方式，通过读取profile文件的节点信息

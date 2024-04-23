@@ -2,7 +2,7 @@ package cherryNatsCluster
 
 import (
 	"github.com/nats-io/nats.go"
-	clog "github/po2656233/superplace/logger"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type (

@@ -1,8 +1,8 @@
 package extendCluster
 
 import (
-	face "github/po2656233/superplace/facade"
-	cherryNatsCluster "github/po2656233/superplace/net/cluster/nats_cluster"
+	face "github.com/po2656233/superplace/facade"
+	cherryNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
 )
 
 const (

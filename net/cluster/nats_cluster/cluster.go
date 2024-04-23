@@ -1,19 +1,19 @@
 package cherryNatsCluster
 
 import (
-	ccode "github/po2656233/superplace/const/code"
-	cerr "github/po2656233/superplace/logger/error"
+	ccode "github.com/po2656233/superplace/const/code"
+	cerr "github.com/po2656233/superplace/logger/error"
 	"time"
 
 	"google.golang.org/protobuf/proto"
 
 	"github.com/nats-io/nats.go"
+	cprofile "github.com/po2656233/superplace/config"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cnats "github.com/po2656233/superplace/net/nats"
+	cproto "github.com/po2656233/superplace/net/proto"
 	"go.uber.org/zap/zapcore"
-	cprofile "github/po2656233/superplace/config"
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
-	cnats "github/po2656233/superplace/net/nats"
-	cproto "github/po2656233/superplace/net/proto"
 )
 
 type (

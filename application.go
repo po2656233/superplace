@@ -6,14 +6,14 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	cprofile "github/po2656233/superplace/config"
-	cconst "github/po2656233/superplace/const"
-	ctime "github/po2656233/superplace/extend/time"
-	cutils "github/po2656233/superplace/extend/utils"
-	cfacade "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
-	cactor "github/po2656233/superplace/net/actor"
-	cserializer "github/po2656233/superplace/net/serializer"
+	cprofile "github.com/po2656233/superplace/config"
+	cconst "github.com/po2656233/superplace/const"
+	ctime "github.com/po2656233/superplace/extend/time"
+	cutils "github.com/po2656233/superplace/extend/utils"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cactor "github.com/po2656233/superplace/net/actor"
+	cserializer "github.com/po2656233/superplace/net/serializer"
 )
 
 const (

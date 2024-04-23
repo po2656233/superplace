@@ -1,6 +1,6 @@
 package cherryActor
 
-import face "github/po2656233/superplace/facade"
+import face "github.com/po2656233/superplace/facade"
 
 var (
 	Name = "actor_component"

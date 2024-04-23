@@ -3,9 +3,9 @@ package cherryActor
 import (
 	"time"
 
-	creflect "github/po2656233/superplace/extend/reflect"
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
+	creflect "github.com/po2656233/superplace/extend/reflect"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type mailbox struct {

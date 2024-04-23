@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	cproto "github/po2656233/superplace/net/proto"
+	cproto "github.com/po2656233/superplace/net/proto"
 )
 
 func TestPB(t *testing.T) {

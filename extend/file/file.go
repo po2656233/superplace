@@ -1,15 +1,15 @@
 package exFile
 
 import (
+	cerr "github.com/po2656233/superplace/logger/error"
 	"os"
 	"path"
 	"path/filepath"
 	"runtime"
 	"sort"
 	"strings"
-	cerr "github/po2656233/superplace/logger/error"
 
-	cslice "github/po2656233/superplace/extend/slice"
+	cslice "github.com/po2656233/superplace/extend/slice"
 )
 
 func JudgeFile(filePath string) (string, bool) {

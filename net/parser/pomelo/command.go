@@ -5,10 +5,10 @@ import (
 
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap/zapcore"
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
-	pmessage "github/po2656233/superplace/net/parser/pomelo/message"
-	ppacket "github/po2656233/superplace/net/parser/pomelo/packet"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	pmessage "github.com/po2656233/superplace/net/parser/pomelo/message"
+	ppacket "github.com/po2656233/superplace/net/parser/pomelo/packet"
 )
 
 type (

@@ -3,7 +3,7 @@ package cherryNats
 import (
 	"time"
 
-	face "github/po2656233/superplace/facade"
+	face "github.com/po2656233/superplace/facade"
 )
 
 var (

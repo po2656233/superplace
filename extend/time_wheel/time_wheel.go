@@ -6,8 +6,8 @@ import (
 	"time"
 	"unsafe"
 
-	cutils "github/po2656233/superplace/extend/utils"
-	clog "github/po2656233/superplace/logger"
+	cutils "github.com/po2656233/superplace/extend/utils"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 // TimeWheel is an implementation of Hierarchical Timing Wheels.

@@ -1,11 +1,11 @@
 package simple
 
 import (
-	cerr "github/po2656233/superplace/logger/error"
+	cerr "github.com/po2656233/superplace/logger/error"
 	"sync"
 
-	face "github/po2656233/superplace/facade"
-	clog "github/po2656233/superplace/logger"
+	face "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 var (

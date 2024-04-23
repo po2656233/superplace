@@ -1,7 +1,7 @@
 package cherryActor
 
 import (
-	face "github/po2656233/superplace/facade"
+	face "github.com/po2656233/superplace/facade"
 )
 
 type Base struct {

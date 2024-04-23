@@ -2,9 +2,9 @@ package config
 
 import (
 	"fmt"
-	cerr "github/po2656233/superplace/logger/error"
+	cerr "github.com/po2656233/superplace/logger/error"
 
-	face "github/po2656233/superplace/facade"
+	face "github.com/po2656233/superplace/facade"
 )
 
 // Node node info
