@@ -7,13 +7,13 @@ import (
 	"time"
 
 	"go.uber.org/zap/zapcore"
-	cnet "superplace/extend/net"
-	cutils "superplace/extend/utils"
-	face "superplace/facade"
-	clog "superplace/logger"
-	pomeloMessage "superplace/net/parser/pomelo/message"
-	pomeloPacket "superplace/net/parser/pomelo/packet"
-	cproto "superplace/net/proto"
+	cnet "github/po2656233/superplace/extend/net"
+	cutils "github/po2656233/superplace/extend/utils"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	pomeloMessage "github/po2656233/superplace/net/parser/pomelo/message"
+	pomeloPacket "github/po2656233/superplace/net/parser/pomelo/packet"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 const (

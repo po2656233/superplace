@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"go.uber.org/zap/zapcore"
-	cnet "superplace/extend/net"
-	cutils "superplace/extend/utils"
-	face "superplace/facade"
-	clog "superplace/logger"
-	cproto "superplace/net/proto"
+	cnet "github/po2656233/superplace/extend/net"
+	cutils "github/po2656233/superplace/extend/utils"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 const (

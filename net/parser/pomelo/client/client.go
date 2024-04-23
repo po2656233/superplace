@@ -5,20 +5,20 @@ import (
 	"net"
 	"net/url"
 	"runtime/debug"
-	cerr "superplace/logger/error"
+	cerr "github/po2656233/superplace/logger/error"
 	"sync"
 	"sync/atomic"
 	"time"
 
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
-	ccompress "superplace/extend/compress"
-	clog "superplace/logger"
-	cconnector "superplace/net/connector"
-	pomeloMessage "superplace/net/parser/pomelo/message"
-	pomeloPacket "superplace/net/parser/pomelo/packet"
-	cproto "superplace/net/proto"
-	cserializer "superplace/net/serializer"
+	ccompress "github/po2656233/superplace/extend/compress"
+	clog "github/po2656233/superplace/logger"
+	cconnector "github/po2656233/superplace/net/connector"
+	pomeloMessage "github/po2656233/superplace/net/parser/pomelo/message"
+	pomeloPacket "github/po2656233/superplace/net/parser/pomelo/packet"
+	cproto "github/po2656233/superplace/net/proto"
+	cserializer "github/po2656233/superplace/net/serializer"
 )
 
 type (

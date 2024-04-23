@@ -2,7 +2,7 @@ package pomeloPacket
 
 import (
 	"bytes"
-	cerr "superplace/logger/error"
+	cerr "github/po2656233/superplace/logger/error"
 )
 
 type (

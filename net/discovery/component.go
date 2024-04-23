@@ -1,9 +1,9 @@
 package cherryDiscovery
 
 import (
-	cprofile "superplace/config"
-	face "superplace/facade"
-	clog "superplace/logger"
+	cprofile "github/po2656233/superplace/config"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
 )
 
 const (

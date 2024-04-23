@@ -6,7 +6,7 @@ import (
 	"sync"
 	"testing"
 
-	clog "superplace/logger"
+	clog "github/po2656233/superplace/logger"
 )
 
 // websocket client http://www.websocket-test.com/

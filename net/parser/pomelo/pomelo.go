@@ -1,10 +1,10 @@
 package pomelo
 
 import (
-	face "superplace/facade"
-	clog "superplace/logger"
-	pmessage "superplace/net/parser/pomelo/message"
-	cproto "superplace/net/proto"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	pmessage "github/po2656233/superplace/net/parser/pomelo/message"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 // DefaultDataRoute 默认的消息路由

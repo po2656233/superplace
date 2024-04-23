@@ -3,7 +3,7 @@ package pomeloMessage
 import (
 	"strings"
 
-	clog "superplace/logger"
+	clog "github/po2656233/superplace/logger"
 )
 
 var (

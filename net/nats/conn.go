@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	clog "superplace/logger"
+	clog "github/po2656233/superplace/logger"
 )
 
 type (

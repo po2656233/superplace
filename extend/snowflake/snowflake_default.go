@@ -1,8 +1,8 @@
 package exSnowflake
 
 import (
-	ccrypto "superplace/extend/crypto"
-	clog "superplace/logger"
+	ccrypto "github/po2656233/superplace/extend/crypto"
+	clog "github/po2656233/superplace/logger"
 )
 
 var (

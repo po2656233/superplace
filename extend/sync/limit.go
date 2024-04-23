@@ -2,7 +2,7 @@
 package exSync
 
 import (
-	cerr "superplace/logger/error"
+	cerr "github/po2656233/superplace/logger/error"
 )
 
 var (

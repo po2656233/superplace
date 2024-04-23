@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	cprofile "superplace/config"
-	face "superplace/facade"
-	clog "superplace/logger"
-	cnats "superplace/net/nats"
-	cproto "superplace/net/proto"
+	cprofile "github/po2656233/superplace/config"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	cnats "github/po2656233/superplace/net/nats"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 // DiscoveryNATS master节点模式(master为单节点)

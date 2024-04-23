@@ -1,10 +1,10 @@
 package simple
 
 import (
-	face "superplace/facade"
-	clog "superplace/logger"
-	cactor "superplace/net/actor"
-	cproto "superplace/net/proto"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	cactor "github/po2656233/superplace/net/actor"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 type ActorBase struct {

@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	clog "superplace/logger"
+	clog "github/po2656233/superplace/logger"
 )
 
 func TestNewTCPConnector(t *testing.T) {

@@ -2,11 +2,11 @@ package logger
 
 import (
 	"fmt"
-	cprofile "superplace/config"
+	cprofile "github/po2656233/superplace/config"
 	"time"
 
 	"go.uber.org/zap/zapcore"
-	face "superplace/facade"
+	face "github/po2656233/superplace/facade"
 )
 
 type (

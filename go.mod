@@ -1,4 +1,4 @@
-module superplace
+module github.com/po2656233/superplace
 
 go 1.18
 

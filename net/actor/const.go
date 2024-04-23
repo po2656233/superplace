@@ -1,7 +1,7 @@
 package cherryActor
 
 import (
-	cerror "superplace/logger/error"
+	cerror "github/po2656233/superplace/logger/error"
 )
 
 var (

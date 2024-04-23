@@ -2,12 +2,12 @@ package config
 
 import (
 	"path/filepath"
-	cerror "superplace/logger/error"
+	cerror "github/po2656233/superplace/logger/error"
 
-	cfile "superplace/extend/file"
-	cjson "superplace/extend/json"
-	cstring "superplace/extend/string"
-	face "superplace/facade"
+	cfile "github/po2656233/superplace/extend/file"
+	cjson "github/po2656233/superplace/extend/json"
+	cstring "github/po2656233/superplace/extend/string"
+	face "github/po2656233/superplace/facade"
 )
 
 var (

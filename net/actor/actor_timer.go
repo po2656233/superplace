@@ -3,9 +3,9 @@ package cherryActor
 import (
 	"time"
 
-	cherryTimeWheel "superplace/extend/time_wheel"
-	cutils "superplace/extend/utils"
-	clog "superplace/logger"
+	cherryTimeWheel "github/po2656233/superplace/extend/time_wheel"
+	cutils "github/po2656233/superplace/extend/utils"
+	clog "github/po2656233/superplace/logger"
 )
 
 const (

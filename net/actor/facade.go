@@ -3,8 +3,8 @@ package cherryActor
 import (
 	"time"
 
-	creflect "superplace/extend/reflect"
-	face "superplace/facade"
+	creflect "github/po2656233/superplace/extend/reflect"
+	face "github/po2656233/superplace/facade"
 )
 
 type (

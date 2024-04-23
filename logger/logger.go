@@ -8,9 +8,9 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	cprofile "superplace/config"
-	face "superplace/facade"
-	"superplace/logger/rotatelogs"
+	cprofile "github/po2656233/superplace/config"
+	face "github/po2656233/superplace/facade"
+	"github/po2656233/superplace/logger/rotatelogs"
 )
 
 var (

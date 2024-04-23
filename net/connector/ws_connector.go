@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	face "superplace/facade"
-	clog "superplace/logger"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
 )
 
 type (

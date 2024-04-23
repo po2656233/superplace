@@ -3,7 +3,7 @@ package rotatelogs
 import (
 	"time"
 
-	"superplace/logger/rotatelogs/internal/option"
+	"github/po2656233/superplace/logger/rotatelogs/internal/option"
 )
 
 const (

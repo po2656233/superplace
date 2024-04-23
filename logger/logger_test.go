@@ -3,7 +3,7 @@ package logger
 import (
 	"testing"
 
-	ctime "superplace/extend/time"
+	ctime "github/po2656233/superplace/extend/time"
 )
 
 func BenchmarkWrite(b *testing.B) {

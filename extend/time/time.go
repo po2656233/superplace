@@ -2,8 +2,8 @@
 package exTime
 
 import (
+	cerr "github/po2656233/superplace/logger/error"
 	"strconv"
-	cerr "superplace/logger/error"
 	"time"
 )
 

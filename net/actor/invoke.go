@@ -2,16 +2,16 @@ package cherryActor
 
 import (
 	"reflect"
-	ccode "superplace/const/code"
-	cerror "superplace/logger/error"
+	ccode "github/po2656233/superplace/const/code"
+	cerror "github/po2656233/superplace/logger/error"
 
 	"google.golang.org/protobuf/proto"
 
-	creflect "superplace/extend/reflect"
-	cutils "superplace/extend/utils"
-	face "superplace/facade"
-	clog "superplace/logger"
-	cproto "superplace/net/proto"
+	creflect "github/po2656233/superplace/extend/reflect"
+	cutils "github/po2656233/superplace/extend/utils"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 func InvokeLocalFunc(app face.IApplication, fi *creflect.FuncInfo, m *face.Message) {

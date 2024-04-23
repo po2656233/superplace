@@ -2,17 +2,17 @@ package pomelo
 
 import (
 	"net"
-	ccode "superplace/const/code"
+	ccode "github/po2656233/superplace/const/code"
 	"time"
 
 	"github.com/nats-io/nuid"
 	"go.uber.org/zap/zapcore"
-	face "superplace/facade"
-	clog "superplace/logger"
-	cactor "superplace/net/actor"
-	pomeloMessage "superplace/net/parser/pomelo/message"
-	ppacket "superplace/net/parser/pomelo/packet"
-	cproto "superplace/net/proto"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	cactor "github/po2656233/superplace/net/actor"
+	pomeloMessage "github/po2656233/superplace/net/parser/pomelo/message"
+	ppacket "github/po2656233/superplace/net/parser/pomelo/packet"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 type (

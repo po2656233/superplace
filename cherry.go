@@ -1,9 +1,9 @@
 package superplace
 
 import (
-	cfacade "superplace/facade"
-	ccluster "superplace/net/cluster"
-	cdiscovery "superplace/net/discovery"
+	cfacade "github/po2656233/superplace/facade"
+	ccluster "github/po2656233/superplace/net/cluster"
+	cdiscovery "github/po2656233/superplace/net/discovery"
 )
 
 type (

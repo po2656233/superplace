@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 	"runtime"
-	cstring "superplace/extend/string"
-	cerr "superplace/logger/error"
+	cstring "github/po2656233/superplace/extend/string"
+	cerr "github/po2656233/superplace/logger/error"
 )
 
 var (

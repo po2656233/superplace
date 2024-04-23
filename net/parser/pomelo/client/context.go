@@ -3,7 +3,7 @@ package pomeloClient
 import (
 	"time"
 
-	cmsg "superplace/net/parser/pomelo/message"
+	cmsg "github/po2656233/superplace/net/parser/pomelo/message"
 )
 
 type (

@@ -1,7 +1,7 @@
 package extendConnector
 
 import (
-	clog "superplace/logger"
+	clog "github/po2656233/superplace/logger"
 )
 
 type (

@@ -2,14 +2,14 @@ package cherryActor
 
 import (
 	"strings"
-	ccode "superplace/const/code"
+	ccode "github/po2656233/superplace/const/code"
 	"sync"
 	"time"
 
-	cutils "superplace/extend/utils"
-	face "superplace/facade"
-	clog "superplace/logger"
-	cproto "superplace/net/proto"
+	cutils "github/po2656233/superplace/extend/utils"
+	face "github/po2656233/superplace/facade"
+	clog "github/po2656233/superplace/logger"
+	cproto "github/po2656233/superplace/net/proto"
 )
 
 type (

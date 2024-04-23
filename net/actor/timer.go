@@ -3,7 +3,7 @@ package cherryActor
 import (
 	"time"
 
-	ctimeWheel "superplace/extend/time_wheel"
+	ctimeWheel "github/po2656233/superplace/extend/time_wheel"
 )
 
 var (

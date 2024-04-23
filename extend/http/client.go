@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	clog "superplace/logger"
+	clog "github/po2656233/superplace/logger"
 )
 
 var (

@@ -1,8 +1,8 @@
 package cherryNatsCluster
 
 import (
-	clog "superplace/logger"
 	"github.com/nats-io/nats.go"
+	clog "github/po2656233/superplace/logger"
 )
 
 type (

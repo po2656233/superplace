@@ -4,7 +4,7 @@ import (
 	"strings"
 	"sync"
 
-	face "superplace/facade"
+	face "github/po2656233/superplace/facade"
 )
 
 type actorChild struct {

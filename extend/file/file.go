@@ -7,9 +7,9 @@ import (
 	"runtime"
 	"sort"
 	"strings"
-	cerr "superplace/logger/error"
+	cerr "github/po2656233/superplace/logger/error"
 
-	cslice "superplace/extend/slice"
+	cslice "github/po2656233/superplace/extend/slice"
 )
 
 func JudgeFile(filePath string) (string, bool) {

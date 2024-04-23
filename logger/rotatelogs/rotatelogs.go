@@ -6,12 +6,12 @@ package rotatelogs
 
 import (
 	"fmt"
+	cerror "github/po2656233/superplace/logger/error"
 	"io"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
-	cerror "superplace/logger/error"
 	"sync"
 	"time"
 
