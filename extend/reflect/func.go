@@ -2,10 +2,10 @@ package exReflect
 
 import (
 	"fmt"
-	"reflect"
-	"runtime"
 	cstring "github.com/po2656233/superplace/extend/string"
 	cerr "github.com/po2656233/superplace/logger/error"
+	"reflect"
+	"runtime"
 )
 
 var (
@@ -14,6 +14,7 @@ var (
 
 type FuncInfo struct {
 	Name       string
+	FileName   string
 	Type       reflect.Type
 	Value      reflect.Value
 	InArgs     []reflect.Type
@@ -34,6 +35,7 @@ func GetFuncInfo(fn interface{}) (FuncInfo, error) {
 	}
 	fullName := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
 	funcName := cstring.CutLastString(fullName, ".", "-")
+	fileName := cstring.CutLastString(fullName, ".", ".")
 	var inArgs []reflect.Type
 	for i := 0; i < typ.NumIn(); i++ {
 		t := typ.In(i)
@@ -48,6 +50,7 @@ func GetFuncInfo(fn interface{}) (FuncInfo, error) {
 
 	funcInfo := FuncInfo{
 		Name:       funcName,
+		FileName:   fileName,
 		Type:       typ,
 		Value:      reflect.ValueOf(fn),
 		InArgs:     inArgs,

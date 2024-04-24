@@ -2,12 +2,12 @@ package cherryDiscovery
 
 import (
 	"fmt"
+	clog "github.com/po2656233/superplace/logger"
 	"time"
 
 	"github.com/nats-io/nats.go"
 	cprofile "github.com/po2656233/superplace/config"
 	face "github.com/po2656233/superplace/facade"
-	clog "github.com/po2656233/superplace/logger"
 	cnats "github.com/po2656233/superplace/net/nats"
 	cproto "github.com/po2656233/superplace/net/proto"
 )

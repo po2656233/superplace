@@ -13,14 +13,24 @@ func CutLastString(text, beginChar, endChar string) string {
 	if text == "" || beginChar == "" || endChar == "" {
 		return ""
 	}
+	beginIndex := 0
+	endIndex := 0
+	if beginChar == endChar {
+		results := goStrings.Split(text, beginChar)
+		resultSize := len(results) - 1
+		if 0 < resultSize-1 {
+			return results[resultSize-1]
+		}
+		return results[resultSize]
+	}
 
-	textRune := []rune(text)
-
-	beginIndex := goStrings.LastIndex(text, beginChar)
-	endIndex := goStrings.LastIndex(text, endChar)
+	beginIndex = goStrings.LastIndex(text, beginChar)
+	endIndex = goStrings.LastIndex(text, endChar)
 	if endIndex < beginIndex+1 {
 		return ""
 	}
+
+	textRune := []rune(text)
 	if endIndex < 0 || endIndex < beginIndex {
 		endIndex = len(textRune)
 	}

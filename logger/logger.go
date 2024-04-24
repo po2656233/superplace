@@ -6,43 +6,47 @@ import (
 	"sync"
 	"time"
 
+	cprofile "github.com/po2656233/superplace/config"
+	cfacade "github.com/po2656233/superplace/facade"
+	"github.com/po2656233/superplace/logger/rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	cprofile "github.com/po2656233/superplace/config"
-	face "github.com/po2656233/superplace/facade"
-	"github.com/po2656233/superplace/logger/rotatelogs"
 )
 
 var (
-	rw             sync.RWMutex            // mutex
-	DefaultLogger  *SuperLogger            // 默认日志对象(控制台输出)
-	loggers        map[string]*SuperLogger // 日志实例存储map(key:日志名称,value:日志实例)
-	nodeId         string                  // current node id
-	printLevel     zapcore.Level           // extend log print level
-	fileNameVarMap = map[string]string{}   // 日志输出文件名自定义变量
+	rw             sync.RWMutex             // mutex
+	DefaultLogger  *CherryLogger            // 默认日志对象(控制台输出)
+	loggers        map[string]*CherryLogger // 日志实例存储map(key:日志名称,value:日志实例)
+	nodeId         string                   // current node id
+	printLevel     zapcore.Level            // cherry log print level
+	fileNameVarMap = map[string]string{}    // 日志输出文件名自定义变量
 )
 
 func init() {
-	DefaultLogger = NewConfigLogger(defaultConsoleConfig(), zap.AddCallerSkip(1))
-	loggers = make(map[string]*SuperLogger)
+	DefaultLogger = NewConfigLogger(cprofile.DefaultLogConfig(), zap.AddCallerSkip(1))
+	loggers = make(map[string]*CherryLogger)
 }
 
 // 定义颜色
 const (
 	colorRed    = "\033[31m"
+	colorGreen  = "\033[32m"
 	colorYellow = "\033[33m"
 	colorBlue   = "\033[34m"
+	colorPink   = "\033[35m" // 粉色
+	colorCyan   = "\033[36m" // 青色
+	colorWhite  = "\033[37m"
 	colorReset  = "\033[0m"
 )
 
 // 自定义颜色编码器
 func colorLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
-	color := colorReset
+	color := colorWhite
 	switch level {
 	case zapcore.DebugLevel:
 		color = colorBlue
 	case zapcore.InfoLevel:
-		color = colorReset
+		color = colorCyan
 	case zapcore.WarnLevel:
 		color = colorYellow
 	case zapcore.ErrorLevel, zapcore.DPanicLevel, zapcore.PanicLevel, zapcore.FatalLevel:
@@ -51,16 +55,16 @@ func colorLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(color + level.CapitalString() + colorReset)
 }
 
-type SuperLogger struct {
+type CherryLogger struct {
 	*zap.SugaredLogger
-	*Config
+	*cprofile.LogConfig
 }
 
-func (c *SuperLogger) Print(v ...interface{}) {
+func (c *CherryLogger) Print(v ...interface{}) {
 	c.Warn(v)
 }
 
-func SetNodeLogger(node face.INode) {
+func SetNodeLogger(node cfacade.INode) {
 	nodeId = node.NodeId()
 	refLoggerName := node.Settings().Get("ref_logger").ToString()
 	if refLoggerName == "" {
@@ -87,7 +91,7 @@ func Flush() {
 	}
 }
 
-func NewLogger(refLoggerName string, opts ...zap.Option) *SuperLogger {
+func NewLogger(refLoggerName string, opts ...zap.Option) *CherryLogger {
 	if refLoggerName == "" {
 		return nil
 	}
@@ -99,7 +103,7 @@ func NewLogger(refLoggerName string, opts ...zap.Option) *SuperLogger {
 		return logger
 	}
 
-	config, err := NewConfigWithName(refLoggerName)
+	config, err := cprofile.NewConfigWithName(refLoggerName)
 	if err != nil {
 		Panicf("New Config fail. err = %v", err)
 	}
@@ -109,7 +113,7 @@ func NewLogger(refLoggerName string, opts ...zap.Option) *SuperLogger {
 	return logger
 }
 
-func NewConfigLogger(config *Config, opts ...zap.Option) *SuperLogger {
+func NewConfigLogger(config *cprofile.LogConfig, opts ...zap.Option) *CherryLogger {
 	if config.EnableWriteFile {
 		for key, value := range fileNameVarMap {
 			config.FileLinkPath = strings.ReplaceAll(config.FileLinkPath, "%"+key, value)
@@ -183,12 +187,12 @@ func NewConfigLogger(config *Config, opts ...zap.Option) *SuperLogger {
 		zap.NewAtomicLevelAt(GetLevel(config.LogLevel)),
 	)
 
-	SuperLogger := &SuperLogger{
+	cherryLogger := &CherryLogger{
 		SugaredLogger: NewSugaredLogger(core, opts...),
-		Config:        config,
+		LogConfig:     config,
 	}
 
-	return SuperLogger
+	return cherryLogger
 }
 
 func NewSugaredLogger(core zapcore.Core, opts ...zap.Option) *zap.SugaredLogger {

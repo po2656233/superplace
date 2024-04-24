@@ -1,9 +1,8 @@
 package pomeloMessage
 
 import (
-	"strings"
-
 	clog "github.com/po2656233/superplace/logger"
+	"strings"
 )
 
 var (

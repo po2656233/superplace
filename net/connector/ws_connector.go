@@ -1,13 +1,13 @@
 package extendConnector
 
 import (
+	clog "github.com/po2656233/superplace/logger"
 	"io"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
 	face "github.com/po2656233/superplace/facade"
-	clog "github.com/po2656233/superplace/logger"
 )
 
 type (

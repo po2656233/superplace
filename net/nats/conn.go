@@ -1,10 +1,10 @@
 package cherryNats
 
 import (
+	clog "github.com/po2656233/superplace/logger"
 	"time"
 
 	"github.com/nats-io/nats.go"
-	clog "github.com/po2656233/superplace/logger"
 )
 
 type (

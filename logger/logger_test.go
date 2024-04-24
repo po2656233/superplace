@@ -1,13 +1,14 @@
 package logger
 
 import (
+	config2 "github.com/po2656233/superplace/config"
 	"testing"
 
 	ctime "github.com/po2656233/superplace/extend/time"
 )
 
 func BenchmarkWrite(b *testing.B) {
-	config := defaultConsoleConfig()
+	config := config2.defaultConsoleConfig()
 	config.EnableConsole = false
 	config.EnableWriteFile = true
 	config.FileLinkPath = "logs/log1.log"

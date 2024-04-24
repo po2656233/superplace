@@ -3,13 +3,12 @@ package exHttp
 import (
 	"bytes"
 	"encoding/json"
+	clog "github.com/po2656233/superplace/logger"
 	"io"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-
-	clog "github.com/po2656233/superplace/logger"
 )
 
 var (

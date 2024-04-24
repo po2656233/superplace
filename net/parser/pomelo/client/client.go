@@ -2,10 +2,11 @@ package pomeloClient
 
 import (
 	"crypto/tls"
+	clog "github.com/po2656233/superplace/logger"
+	cerr "github.com/po2656233/superplace/logger/error"
 	"net"
 	"net/url"
 	"runtime/debug"
-	cerr "github.com/po2656233/superplace/logger/error"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -13,7 +14,6 @@ import (
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 	ccompress "github.com/po2656233/superplace/extend/compress"
-	clog "github.com/po2656233/superplace/logger"
 	cconnector "github.com/po2656233/superplace/net/connector"
 	pomeloMessage "github.com/po2656233/superplace/net/parser/pomelo/message"
 	pomeloPacket "github.com/po2656233/superplace/net/parser/pomelo/packet"

@@ -2,6 +2,7 @@ package simple
 
 import (
 	"fmt"
+	clog "github.com/po2656233/superplace/logger"
 	"net"
 	"sync/atomic"
 	"time"
@@ -9,7 +10,6 @@ import (
 	cnet "github.com/po2656233/superplace/extend/net"
 	cutils "github.com/po2656233/superplace/extend/utils"
 	face "github.com/po2656233/superplace/facade"
-	clog "github.com/po2656233/superplace/logger"
 	cproto "github.com/po2656233/superplace/net/proto"
 	"go.uber.org/zap/zapcore"
 )

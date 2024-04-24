@@ -2,12 +2,12 @@
 package exTimeWheel
 
 import (
+	clog "github.com/po2656233/superplace/logger"
 	"sync/atomic"
 	"time"
 	"unsafe"
 
 	cutils "github.com/po2656233/superplace/extend/utils"
-	clog "github.com/po2656233/superplace/logger"
 )
 
 // TimeWheel is an implementation of Hierarchical Timing Wheels.

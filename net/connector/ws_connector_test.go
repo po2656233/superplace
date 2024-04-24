@@ -2,11 +2,10 @@ package extendConnector
 
 import (
 	"fmt"
+	clog "github.com/po2656233/superplace/logger"
 	"net"
 	"sync"
 	"testing"
-
-	clog "github.com/po2656233/superplace/logger"
 )
 
 // websocket client http://www.websocket-test.com/

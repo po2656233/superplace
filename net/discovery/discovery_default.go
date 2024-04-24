@@ -1,6 +1,7 @@
 package cherryDiscovery
 
 import (
+	clog "github.com/po2656233/superplace/logger"
 	cerr "github.com/po2656233/superplace/logger/error"
 	"math/rand"
 	"sync"
@@ -8,7 +9,6 @@ import (
 	cprofile "github.com/po2656233/superplace/config"
 	cslice "github.com/po2656233/superplace/extend/slice"
 	face "github.com/po2656233/superplace/facade"
-	clog "github.com/po2656233/superplace/logger"
 	cproto "github.com/po2656233/superplace/net/proto"
 )
 

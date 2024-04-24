@@ -1,6 +1,7 @@
 package superplace
 
 import (
+	clog "github.com/po2656233/superplace/logger"
 	"os"
 	"os/signal"
 	"sync/atomic"
@@ -11,7 +12,6 @@ import (
 	ctime "github.com/po2656233/superplace/extend/time"
 	cutils "github.com/po2656233/superplace/extend/utils"
 	cfacade "github.com/po2656233/superplace/facade"
-	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
 	cserializer "github.com/po2656233/superplace/net/serializer"
 )
@@ -193,7 +193,8 @@ func (a *Application) Startup() {
 	// component list
 	for _, c := range a.components {
 		c.Set(a)
-		clog.Infof("[component = %s] is added.", c.Name())
+		name := c.Name()
+		clog.Infof("[component = %s] is added.", name)
 	}
 	clog.Info("------------------组件初始化-------------------------------")
 

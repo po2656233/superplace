@@ -1,5 +1,9 @@
 package facade
 
+import (
+	"reflect"
+)
+
 type (
 	IComponent interface {
 		Name() string
@@ -22,7 +26,7 @@ type Component struct {
 }
 
 func (*Component) Name() string {
-	return ""
+	return reflect.TypeOf(Component{}).PkgPath()
 }
 
 func (p *Component) App() IApplication {
