@@ -1,4 +1,4 @@
-package extendConnector
+package connector
 
 import (
 	"crypto/tls"

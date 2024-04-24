@@ -1,4 +1,4 @@
-package extendConnector
+package connector
 
 import (
 	face "github.com/po2656233/superplace/facade"

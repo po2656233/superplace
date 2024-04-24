@@ -1,4 +1,4 @@
-package cherryDiscovery
+package discovery
 
 import (
 	"fmt"

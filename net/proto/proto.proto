@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "superplace/net/proto/proto;cherryProto";
+option go_package = "superplace/net/proto/proto;superProto";
 
 package cherryProto;
 

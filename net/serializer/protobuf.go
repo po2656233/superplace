@@ -1,8 +1,8 @@
-package cherrySerializer
+package serializer
 
 import (
-	"google.golang.org/protobuf/proto"
 	cerr "github.com/po2656233/superplace/logger/error"
+	"google.golang.org/protobuf/proto"
 )
 
 // Protobuf implements the serialize.Protobuf facade

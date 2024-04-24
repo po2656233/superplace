@@ -1,4 +1,4 @@
-package cherryActor
+package actor
 
 import (
 	ccode "github.com/po2656233/superplace/const/code"

@@ -1,4 +1,4 @@
-package cherryDiscovery
+package discovery
 
 import (
 	cprofile "github.com/po2656233/superplace/config"

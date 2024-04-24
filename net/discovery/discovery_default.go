@@ -1,4 +1,4 @@
-package cherryDiscovery
+package discovery
 
 import (
 	clog "github.com/po2656233/superplace/logger"

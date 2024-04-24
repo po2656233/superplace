@@ -1,9 +1,8 @@
-package extendCluster
+package cluster
 
 import (
 	face "github.com/po2656233/superplace/facade"
 	cherryNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
-	"reflect"
 )
 
 const (
@@ -20,7 +19,7 @@ func New() *Component {
 }
 
 func (c *Component) Name() string {
-	return reflect.TypeOf(Component{}).PkgPath()
+	return Name
 }
 
 func (c *Component) Init() {

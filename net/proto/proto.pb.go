@@ -4,7 +4,7 @@
 // 	protoc        v3.7.0
 // source: proto.proto
 
-package cherryProto
+package superProto
 
 import (
 	proto "github.com/golang/protobuf/proto"
@@ -72,7 +72,7 @@ func (x *I32) GetValue() int32 {
 	return 0
 }
 
-// member base
+// member data
 type Member struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -81,7 +81,7 @@ type Member struct {
 	NodeId   string            `protobuf:"bytes,1,opt,name=nodeId,proto3" json:"nodeId,omitempty"`                                                                                             // node id
 	NodeType string            `protobuf:"bytes,2,opt,name=nodeType,proto3" json:"nodeType,omitempty"`                                                                                         // node type
 	Address  string            `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`                                                                                           // rpc ip address
-	Settings map[string]string `protobuf:"bytes,4,rep,name=settings,proto3" json:"settings,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // node settings base
+	Settings map[string]string `protobuf:"bytes,4,rep,name=settings,proto3" json:"settings,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // node settings data
 }
 
 func (x *Member) Reset() {
@@ -144,7 +144,7 @@ func (x *Member) GetSettings() map[string]string {
 	return nil
 }
 
-// member list base
+// member list data
 type MemberList struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -192,14 +192,14 @@ func (x *MemberList) GetList() []*Member {
 	return nil
 }
 
-// cross node response base
+// cross node response data
 type Response struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	Code int32  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"` // message code
-	Data []byte `protobuf:"bytes,2,opt,name=base,proto3" json:"base,omitempty"`  // message base
+	Data []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`  // message data
 }
 
 func (x *Response) Reset() {
@@ -345,7 +345,7 @@ type Session struct {
 	AgentPath string            `protobuf:"bytes,3,opt,name=agentPath,proto3" json:"agentPath,omitempty"`                                                                               // frontend actor agent path
 	Ip        string            `protobuf:"bytes,4,opt,name=ip,proto3" json:"ip,omitempty"`                                                                                             // ip address
 	Mid       uint32            `protobuf:"varint,5,opt,name=mid,proto3" json:"mid,omitempty"`                                                                                          // message id build by client
-	Data      map[string]string `protobuf:"bytes,7,rep,name=base,proto3" json:"base,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // extend base
+	Data      map[string]string `protobuf:"bytes,7,rep,name=data,proto3" json:"data,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // extend data
 }
 
 func (x *Session) Reset() {
@@ -429,7 +429,7 @@ type PomeloResponse struct {
 
 	Sid  string `protobuf:"bytes,1,opt,name=sid,proto3" json:"sid,omitempty"`
 	Mid  uint32 `protobuf:"varint,2,opt,name=mid,proto3" json:"mid,omitempty"`
-	Data []byte `protobuf:"bytes,3,opt,name=base,proto3" json:"base,omitempty"`
+	Data []byte `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 	Code int32  `protobuf:"varint,4,opt,name=code,proto3" json:"code,omitempty"`
 }
 
@@ -500,7 +500,7 @@ type PomeloPush struct {
 
 	Sid   string `protobuf:"bytes,1,opt,name=sid,proto3" json:"sid,omitempty"`
 	Route string `protobuf:"bytes,2,opt,name=route,proto3" json:"route,omitempty"`
-	Data  []byte `protobuf:"bytes,3,opt,name=base,proto3" json:"base,omitempty"`
+	Data  []byte `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
 }
 
 func (x *PomeloPush) Reset() {
@@ -635,7 +635,7 @@ type PomeloBroadcastPush struct {
 	UidList []int64 `protobuf:"varint,1,rep,packed,name=uidList,proto3" json:"uidList,omitempty"` // broadcast the uid list
 	AllUID  bool    `protobuf:"varint,2,opt,name=allUID,proto3" json:"allUID,omitempty"`          // broadcast all uid
 	Route   string  `protobuf:"bytes,3,opt,name=route,proto3" json:"route,omitempty"`             // route
-	Data    []byte  `protobuf:"bytes,4,opt,name=base,proto3" json:"base,omitempty"`               // base
+	Data    []byte  `protobuf:"bytes,4,opt,name=data,proto3" json:"data,omitempty"`               // data
 }
 
 func (x *PomeloBroadcastPush) Reset() {
@@ -775,11 +775,10 @@ var file_proto_proto_rawDesc = []byte{
 	0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x61, 0x6c, 0x6c, 0x55, 0x49, 0x44, 0x12, 0x14, 0x0a,
 	0x05, 0x72, 0x6f, 0x75, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x72, 0x6f,
 	0x75, 0x74, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x42, 0x3b, 0x5a, 0x39, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x63, 0x68, 0x65, 0x72, 0x72, 0x79, 0x2d, 0x67, 0x61, 0x6d,
-	0x65, 0x2f, 0x63, 0x68, 0x65, 0x72, 0x72, 0x79, 0x2f, 0x6e, 0x65, 0x74, 0x2f, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x3b, 0x63, 0x68, 0x65, 0x72, 0x72, 0x79, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x42, 0x27, 0x5a, 0x25, 0x73, 0x75, 0x70, 0x65, 0x72,
+	0x70, 0x6c, 0x61, 0x63, 0x65, 0x2f, 0x6e, 0x65, 0x74, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x3b, 0x73, 0x75, 0x70, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -813,7 +812,7 @@ var file_proto_proto_depIdxs = []int32{
 	10, // 0: cherryProto.Member.settings:type_name -> cherryProto.Member.SettingsEntry
 	1,  // 1: cherryProto.MemberList.list:type_name -> cherryProto.Member
 	5,  // 2: cherryProto.ClusterPacket.session:type_name -> cherryProto.Session
-	11, // 3: cherryProto.Session.base:type_name -> cherryProto.Session.DataEntry
+	11, // 3: cherryProto.Session.data:type_name -> cherryProto.Session.DataEntry
 	4,  // [4:4] is the sub-list for method output_type
 	4,  // [4:4] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

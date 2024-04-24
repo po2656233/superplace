@@ -1,4 +1,4 @@
-package cherryProto
+package superProto
 
 import (
 	"fmt"
