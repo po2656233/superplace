@@ -16,6 +16,7 @@ import (
 
 // logrus在记录Levels()返回的日志级别的消息时会触发HOOK,
 // 按照Fire方法定义的内容修改logrus.Entry.
+
 type Hook interface {
 	Levels() []logrus.Level
 	Fire(*logrus.Entry) error
@@ -50,13 +51,13 @@ func init() {
 	}
 	singleLog.SetLevel(toLevel(conf.LogLevel))
 	if conf.EmailHook != nil {
-		AddEmailHook(conf.EmailHook)
+		_ = AddEmailHook(conf.EmailHook)
 	}
 	if conf.RedisHook != nil {
-		AddRedisHook(conf.RedisHook)
+		_ = AddRedisHook(conf.RedisHook)
 	}
 	if conf.MongoHook != nil {
-		AddMongoHook(conf.MongoHook)
+		_ = AddMongoHook(conf.MongoHook)
 	}
 	defaultLogger = singleLog.WithFields(logrus.Fields{"user": conf.User})
 
@@ -66,6 +67,11 @@ func init() {
 	//}
 
 }
+
+func Obj() *logrus.Logger {
+	return singleLog
+}
+
 func AddEmailHook(eConf *cprofile.EmailHook) error {
 	//parameter"APPLICATION_NAME", "HOST", PORT, "FROM", "TO"
 	//首先开启smtp服务,最后两个参数是smtp的用户名和密码

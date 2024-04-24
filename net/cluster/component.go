@@ -1,12 +1,9 @@
 package cluster
 
 import (
+	exReflect "github.com/po2656233/superplace/extend/reflect"
 	face "github.com/po2656233/superplace/facade"
 	cherryNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
-)
-
-const (
-	Name = "cluster_component"
 )
 
 type Component struct {
@@ -19,7 +16,7 @@ func New() *Component {
 }
 
 func (c *Component) Name() string {
-	return Name
+	return exReflect.GetPackName(Component{})
 }
 
 func (c *Component) Init() {

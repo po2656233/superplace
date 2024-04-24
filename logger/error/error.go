@@ -73,6 +73,7 @@ var (
 )
 
 var (
-	FuncIsNil     = Error("function is nil")
-	FuncTypeError = Error("Is not func type")
+	FuncIsNil      = Error("function is nil")
+	FuncTypeError  = Error("Is not func type")
+	InterfaceIsNil = Error("interface is nil")
 )

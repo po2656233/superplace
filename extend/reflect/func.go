@@ -6,6 +6,7 @@ import (
 	cerr "github.com/po2656233/superplace/logger/error"
 	"reflect"
 	"runtime"
+	"strings"
 )
 
 var (
@@ -68,4 +69,10 @@ func GetFuncName(fn interface{}) string {
 
 	fullName := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
 	return cstring.CutLastString(fullName, ".", "-")
+}
+
+func GetPackName(face interface{}) string {
+	pkName := reflect.TypeOf(face).PkgPath()
+	list := strings.Split(pkName, "/")
+	return list[len(list)-1]
 }

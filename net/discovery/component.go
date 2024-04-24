@@ -2,12 +2,9 @@ package discovery
 
 import (
 	cprofile "github.com/po2656233/superplace/config"
+	exReflect "github.com/po2656233/superplace/extend/reflect"
 	face "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
-)
-
-const (
-	Name = "discovery_component"
 )
 
 type Component struct {
@@ -19,8 +16,8 @@ func New() *Component {
 	return &Component{}
 }
 
-func (*Component) Name() string {
-	return Name
+func (p *Component) Name() string {
+	return exReflect.GetPackName(Component{})
 }
 
 func (p *Component) Init() {
