@@ -43,7 +43,7 @@ func colorLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 	color := colorWhite
 	switch level {
 	case zapcore.DebugLevel:
-		color = colorBlue
+		color = colorPink
 	case zapcore.InfoLevel:
 		color = colorCyan
 	case zapcore.WarnLevel:
