@@ -7,7 +7,7 @@ import (
 )
 
 // StartCMD 启动指定进程
-func StartCMD(shFile string) (string, error) {
+func StartCMD(shFile string) error {
 	var cmd *exec.Cmd
 	shFile = GetScriptName(shFile)
 	switch runtime.GOOS {
@@ -16,8 +16,7 @@ func StartCMD(shFile string) (string, error) {
 	case "linux":
 		cmd = exec.Command("/bin/bash", "-c", shFile)
 	}
-	output, err := cmd.Output()
-	return string(output), err
+	return cmd.Start()
 }
 
 func GetScriptName(name string) string {
