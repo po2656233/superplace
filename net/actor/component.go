@@ -1,6 +1,9 @@
 package actor
 
-import face "github.com/po2656233/superplace/facade"
+import (
+	exReflect "github.com/po2656233/superplace/extend/reflect"
+	face "github.com/po2656233/superplace/facade"
+)
 
 var (
 	Name = "actor_component"
@@ -19,7 +22,7 @@ func New() *Component {
 }
 
 func (c *Component) Name() string {
-	return Name
+	return exReflect.GetPackName(Component{})
 }
 
 func (c *Component) Init() {
