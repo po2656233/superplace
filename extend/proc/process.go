@@ -8,7 +8,7 @@ import (
 )
 
 // StartProcess 启动指定进程
-func StartProcess(processPath, processArgs string) (pid int, err error) {
+func StartProcess(processPath, processArgs string, needWait bool) (pid int, err error) {
 	var cmd *exec.Cmd
 	if processArgs == "" {
 		cmd = exec.Command(processPath)
@@ -18,7 +18,10 @@ func StartProcess(processPath, processArgs string) (pid int, err error) {
 	if err = cmd.Start(); err != nil {
 		return -1, err
 	}
-	return cmd.Process.Pid, nil
+	if needWait {
+		err = cmd.Wait()
+	}
+	return cmd.Process.Pid, err
 }
 
 // StopProcess 根据进程名称终止进程
