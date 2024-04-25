@@ -48,8 +48,8 @@ func (p *AppBuilder) Startup() {
 
 		// 启动nats
 		if ok, _ := proc.CheckProcRunning("nats-server"); !ok {
-			pid, err := proc.StartProcess(tools.GetNatsSHFile(), "", true)
-			clog.Infof("nats-server START pid:%v err:%v", pid, err)
+			ret, err := proc.StartCMD(tools.GetNatsSHFile())
+			clog.Infof("nats-server START pid:%v err:%v", ret, err)
 		}
 	}
 

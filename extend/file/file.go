@@ -160,21 +160,6 @@ func CheckPath(filePath string) error {
 	return err
 }
 
-func GetScriptName(name string) string {
-	ext := path.Ext(name)
-	switch runtime.GOOS {
-	case "windows":
-		if ext != ".bat" {
-			name += ".bat"
-		}
-	case "linux":
-		if ext != ".sh" {
-			name += ".sh"
-		}
-	}
-	return name
-}
-
 func GetFileName(filePath string, removeExt bool) string {
 	fileName := path.Base(filePath)
 	if !removeExt {
