@@ -28,7 +28,7 @@ type (
 		cfacade.INode
 		isFrontend   bool
 		nodeMode     NodeMode
-		startTime    ctime.CherryTime     // application start time
+		startTime    ctime.SuperTime      // application start time
 		running      int32                // is running
 		dieChan      chan bool            // wait for end application
 		onShutdownFn []func()             // on shutdown execute functions
@@ -193,8 +193,7 @@ func (a *Application) Startup() {
 	// component list
 	for _, c := range a.components {
 		c.Set(a)
-		name := c.Name()
-		clog.Infof("[component = %s] is added.", name)
+		clog.Infof("[component = %s] is added.", c.Name())
 	}
 	clog.Info("------------------组件初始化-------------------------------")
 

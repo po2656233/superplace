@@ -1,9 +1,12 @@
 package superplace
 
 import (
+	"github.com/po2656233/superplace/extend/proc"
+	exReflect "github.com/po2656233/superplace/extend/reflect"
 	cfacade "github.com/po2656233/superplace/facade"
 	ccluster "github.com/po2656233/superplace/net/cluster"
 	cdiscovery "github.com/po2656233/superplace/net/discovery"
+	"path"
 )
 
 type (
@@ -42,6 +45,11 @@ func (p *AppBuilder) Startup() {
 		discovery := cdiscovery.New()
 		app.SetDiscovery(discovery)
 		app.Register(discovery)
+		abs := exReflect.GetFuncPath()
+		natsProc := path.Join(abs, "tools", "nats-server", "nats-server")
+		if ok, _ := proc.CheckProcRunning(natsProc); !ok {
+			proc.StartProcess(natsProc, "")
+		}
 	}
 
 	// Register custom components

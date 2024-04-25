@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestCherryTime_DiffInYears(t *testing.T) {
+func TestSuperTime_DiffInYears(t *testing.T) {
 	ct1 := CreateFromDate(2012, 12, 1)
 	ct2 := CreateFromDate(2022, 2, 1)
 
@@ -12,7 +12,7 @@ func TestCherryTime_DiffInYears(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInYearsWithAbs(t *testing.T) {
+func TestSuperTime_DiffInYearsWithAbs(t *testing.T) {
 	ct1 := CreateFromDate(2012, 12, 1)
 	ct2 := CreateFromDate(2022, 2, 1)
 
@@ -21,7 +21,7 @@ func TestCherryTime_DiffInYearsWithAbs(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInMonths(t *testing.T) {
+func TestSuperTime_DiffInMonths(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -30,7 +30,7 @@ func TestCherryTime_DiffInMonths(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInMonthsWithAbs(t *testing.T) {
+func TestSuperTime_DiffInMonthsWithAbs(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -39,7 +39,7 @@ func TestCherryTime_DiffInMonthsWithAbs(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInWeeks(t *testing.T) {
+func TestSuperTime_DiffInWeeks(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -48,7 +48,7 @@ func TestCherryTime_DiffInWeeks(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInWeeksWithAbs(t *testing.T) {
+func TestSuperTime_DiffInWeeksWithAbs(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -57,7 +57,7 @@ func TestCherryTime_DiffInWeeksWithAbs(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInDays(t *testing.T) {
+func TestSuperTime_DiffInDays(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -66,7 +66,7 @@ func TestCherryTime_DiffInDays(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInDaysWithAbs(t *testing.T) {
+func TestSuperTime_DiffInDaysWithAbs(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -75,7 +75,7 @@ func TestCherryTime_DiffInDaysWithAbs(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInHours(t *testing.T) {
+func TestSuperTime_DiffInHours(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -84,7 +84,7 @@ func TestCherryTime_DiffInHours(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInHoursWithAbs(t *testing.T) {
+func TestSuperTime_DiffInHoursWithAbs(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -93,7 +93,7 @@ func TestCherryTime_DiffInHoursWithAbs(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInSeconds(t *testing.T) {
+func TestSuperTime_DiffInSeconds(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 
@@ -102,7 +102,7 @@ func TestCherryTime_DiffInSeconds(t *testing.T) {
 	t.Logf("result = %v", years)
 }
 
-func TestCherryTime_DiffInSecondsWithAbs(t *testing.T) {
+func TestSuperTime_DiffInSecondsWithAbs(t *testing.T) {
 	ct1 := CreateFromDate(2021, 12, 15)
 	ct2 := CreateFromDate(2022, 1, 1)
 

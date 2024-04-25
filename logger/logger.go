@@ -14,17 +14,16 @@ import (
 )
 
 var (
-	rw             sync.RWMutex             // mutex
-	DefaultLogger  *CherryLogger            // 默认日志对象(控制台输出)
-	loggers        map[string]*CherryLogger // 日志实例存储map(key:日志名称,value:日志实例)
-	nodeId         string                   // current node id
-	printLevel     zapcore.Level            // cherry log print level
-	fileNameVarMap = map[string]string{}    // 日志输出文件名自定义变量
+	rw             sync.RWMutex            // mutex
+	DefaultLogger  *SuperLogger            // 默认日志对象(控制台输出)
+	loggers        map[string]*SuperLogger // 日志实例存储map(key:日志名称,value:日志实例)
+	printLevel     zapcore.Level           // super log print level
+	fileNameVarMap = map[string]string{}   // 日志输出文件名自定义变量
 )
 
 func init() {
 	DefaultLogger = NewConfigLogger(cprofile.DefaultLogConfig(), zap.AddCallerSkip(1))
-	loggers = make(map[string]*CherryLogger)
+	loggers = make(map[string]*SuperLogger)
 }
 
 // 定义颜色
@@ -55,17 +54,16 @@ func colorLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(color + level.CapitalString() + colorReset)
 }
 
-type CherryLogger struct {
+type SuperLogger struct {
 	*zap.SugaredLogger
 	*cprofile.LogConfig
 }
 
-func (c *CherryLogger) Print(v ...interface{}) {
+func (c *SuperLogger) Print(v ...interface{}) {
 	c.Warn(v)
 }
 
 func SetNodeLogger(node cfacade.INode) {
-	nodeId = node.NodeId()
 	refLoggerName := node.Settings().Get("ref_logger").ToString()
 	if refLoggerName == "" {
 		DefaultLogger.Infof("RefLoggerName not found, used default console logger.")
@@ -91,7 +89,7 @@ func Flush() {
 	}
 }
 
-func NewLogger(refLoggerName string, opts ...zap.Option) *CherryLogger {
+func NewLogger(refLoggerName string, opts ...zap.Option) *SuperLogger {
 	if refLoggerName == "" {
 		return nil
 	}
@@ -113,7 +111,7 @@ func NewLogger(refLoggerName string, opts ...zap.Option) *CherryLogger {
 	return logger
 }
 
-func NewConfigLogger(config *cprofile.LogConfig, opts ...zap.Option) *CherryLogger {
+func NewConfigLogger(config *cprofile.LogConfig, opts ...zap.Option) *SuperLogger {
 	if config.EnableWriteFile {
 		for key, value := range fileNameVarMap {
 			config.FileLinkPath = strings.ReplaceAll(config.FileLinkPath, "%"+key, value)
@@ -187,12 +185,12 @@ func NewConfigLogger(config *cprofile.LogConfig, opts ...zap.Option) *CherryLogg
 		zap.NewAtomicLevelAt(GetLevel(config.LogLevel)),
 	)
 
-	cherryLogger := &CherryLogger{
+	superLogger := &SuperLogger{
 		SugaredLogger: NewSugaredLogger(core, opts...),
 		LogConfig:     config,
 	}
 
-	return cherryLogger
+	return superLogger
 }
 
 func NewSugaredLogger(core zapcore.Core, opts ...zap.Option) *zap.SugaredLogger {

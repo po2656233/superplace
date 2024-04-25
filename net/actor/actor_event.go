@@ -1,7 +1,7 @@
 package actor
 
 import (
-	cherryReflect "github.com/po2656233/superplace/extend/reflect"
+	superReflect "github.com/po2656233/superplace/extend/reflect"
 	face "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 )
@@ -24,7 +24,7 @@ func newEvent(thisActor *Actor) actorEvent {
 // name 事件名
 // fn 接收事件处理的函数
 func (p *actorEvent) Register(fn IEventFunc) bool {
-	name := cherryReflect.GetFuncName(fn)
+	name := superReflect.GetFuncName(fn)
 	if name == "" {
 		clog.Warnf("Convert to IEventData fail.")
 		return false

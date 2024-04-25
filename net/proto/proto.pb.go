@@ -795,24 +795,24 @@ func file_proto_proto_rawDescGZIP() []byte {
 
 var file_proto_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_proto_proto_goTypes = []interface{}{
-	(*I32)(nil),                 // 0: cherryProto.I32
-	(*Member)(nil),              // 1: cherryProto.Member
-	(*MemberList)(nil),          // 2: cherryProto.MemberList
-	(*Response)(nil),            // 3: cherryProto.Response
-	(*ClusterPacket)(nil),       // 4: cherryProto.ClusterPacket
-	(*Session)(nil),             // 5: cherryProto.Session
-	(*PomeloResponse)(nil),      // 6: cherryProto.PomeloResponse
-	(*PomeloPush)(nil),          // 7: cherryProto.PomeloPush
-	(*PomeloKick)(nil),          // 8: cherryProto.PomeloKick
-	(*PomeloBroadcastPush)(nil), // 9: cherryProto.PomeloBroadcastPush
-	nil,                         // 10: cherryProto.Member.SettingsEntry
-	nil,                         // 11: cherryProto.Session.DataEntry
+	(*I32)(nil),                 // 0: superProto.I32
+	(*Member)(nil),              // 1: superProto.Member
+	(*MemberList)(nil),          // 2: superProto.MemberList
+	(*Response)(nil),            // 3: superProto.Response
+	(*ClusterPacket)(nil),       // 4: superProto.ClusterPacket
+	(*Session)(nil),             // 5: superProto.Session
+	(*PomeloResponse)(nil),      // 6: superProto.PomeloResponse
+	(*PomeloPush)(nil),          // 7: superProto.PomeloPush
+	(*PomeloKick)(nil),          // 8: superProto.PomeloKick
+	(*PomeloBroadcastPush)(nil), // 9: superProto.PomeloBroadcastPush
+	nil,                         // 10: superProto.Member.SettingsEntry
+	nil,                         // 11: superProto.Session.DataEntry
 }
 var file_proto_proto_depIdxs = []int32{
-	10, // 0: cherryProto.Member.settings:type_name -> cherryProto.Member.SettingsEntry
-	1,  // 1: cherryProto.MemberList.list:type_name -> cherryProto.Member
-	5,  // 2: cherryProto.ClusterPacket.session:type_name -> cherryProto.Session
-	11, // 3: cherryProto.Session.data:type_name -> cherryProto.Session.DataEntry
+	10, // 0: superProto.Member.settings:type_name -> superProto.Member.SettingsEntry
+	1,  // 1: superProto.MemberList.list:type_name -> superProto.Member
+	5,  // 2: superProto.ClusterPacket.session:type_name -> superProto.Session
+	11, // 3: superProto.Session.data:type_name -> superProto.Session.DataEntry
 	4,  // [4:4] is the sub-list for method output_type
 	4,  // [4:4] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

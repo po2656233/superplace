@@ -4,6 +4,7 @@ import (
 	"fmt"
 	cstring "github.com/po2656233/superplace/extend/string"
 	cerr "github.com/po2656233/superplace/logger/error"
+	"path"
 	"reflect"
 	"runtime"
 	"strings"
@@ -75,4 +76,12 @@ func GetPackName(face interface{}) string {
 	pkName := reflect.TypeOf(face).PkgPath()
 	list := strings.Split(pkName, "/")
 	return list[len(list)-1]
+}
+func GetFuncPath() string {
+	var absPath string
+	_, filename, _, ok := runtime.Caller(1)
+	if ok {
+		absPath = path.Dir(filename)
+	}
+	return absPath
 }

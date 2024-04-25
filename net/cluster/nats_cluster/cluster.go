@@ -1,4 +1,4 @@
-package cherryNatsCluster
+package superNatsCluster
 
 import (
 	ccode "github.com/po2656233/superplace/const/code"

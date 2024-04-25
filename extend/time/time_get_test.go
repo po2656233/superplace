@@ -4,82 +4,82 @@ import (
 	"testing"
 )
 
-func TestCherryTime_DaysInYear(t *testing.T) {
+func TestSuperTime_DaysInYear(t *testing.T) {
 	t.Logf("result = %v", Now().DaysInYear())
 }
 
-func TestCherryTime_DaysInMonth(t *testing.T) {
+func TestSuperTime_DaysInMonth(t *testing.T) {
 	t.Logf("result = %v", Now().DaysInMonth())
 }
 
-func TestCherryTime_MonthOfYear(t *testing.T) {
+func TestSuperTime_MonthOfYear(t *testing.T) {
 	t.Logf("result = %v", Now().MonthOfYear())
 }
 
-func TestCherryTime_DayOfYear(t *testing.T) {
+func TestSuperTime_DayOfYear(t *testing.T) {
 	t.Logf("result = %v", Now().DayOfYear())
 }
 
-func TestCherryTime_DayOfMonth(t *testing.T) {
+func TestSuperTime_DayOfMonth(t *testing.T) {
 	t.Logf("result = %v", Now().DayOfMonth())
 }
 
-func TestCherryTime_DayOfWeek(t *testing.T) {
+func TestSuperTime_DayOfWeek(t *testing.T) {
 	t.Logf("result = %v", Now().DayOfWeek())
 }
 
-func TestCherryTime_WeekOfYear(t *testing.T) {
+func TestSuperTime_WeekOfYear(t *testing.T) {
 	t.Logf("result = %v", Now().WeekOfYear())
 }
 
-func TestCherryTime_WeekOfMonth(t *testing.T) {
+func TestSuperTime_WeekOfMonth(t *testing.T) {
 	t.Logf("result = %v", Now().WeekOfMonth())
 }
 
-func TestCherryTime_Year(t *testing.T) {
+func TestSuperTime_Year(t *testing.T) {
 	t.Logf("result = %v", Now().Year())
 }
 
-func TestCherryTime_Quarter(t *testing.T) {
+func TestSuperTime_Quarter(t *testing.T) {
 	t.Logf("result = %v", Now().Quarter())
 }
 
-func TestCherryTime_Month(t *testing.T) {
+func TestSuperTime_Month(t *testing.T) {
 	t.Logf("result = %v", Now().Month())
 }
 
-func TestCherryTime_Week(t *testing.T) {
+func TestSuperTime_Week(t *testing.T) {
 	t.Logf("result = %v", Now().Week())
 }
 
-func TestCherryTime_Day(t *testing.T) {
+func TestSuperTime_Day(t *testing.T) {
 	t.Logf("result = %v", Now().Day())
 }
 
-func TestCherryTime_Hour(t *testing.T) {
+func TestSuperTime_Hour(t *testing.T) {
 	t.Logf("result = %v", Now().Hour())
 }
 
-func TestCherryTime_Minute(t *testing.T) {
+func TestSuperTime_Minute(t *testing.T) {
 	t.Logf("result = %v", Now().Minute())
 }
 
-func TestCherryTime_Second(t *testing.T) {
+func TestSuperTime_Second(t *testing.T) {
 	t.Logf("result = %v", Now().Second())
 }
 
-func TestCherryTime_Millisecond(t *testing.T) {
+func TestSuperTime_Millisecond(t *testing.T) {
 	t.Logf("result = %v", Now().Millisecond())
 }
 
-func TestCherryTime_Microsecond(t *testing.T) {
+func TestSuperTime_Microsecond(t *testing.T) {
 	t.Logf("result = %v", Now().Microsecond())
 }
 
-func TestCherryTime_Nanosecond(t *testing.T) {
+func TestSuperTime_Nanosecond(t *testing.T) {
 	t.Logf("result = %v", Now().Nanosecond())
 }
 
-func TestCherryTime_Timezone(t *testing.T) {
+func TestSuperTime_Timezone(t *testing.T) {
 	t.Logf("result = %v", Now().Timezone())
 }

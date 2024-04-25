@@ -3,7 +3,7 @@ package cluster
 import (
 	exReflect "github.com/po2656233/superplace/extend/reflect"
 	face "github.com/po2656233/superplace/facade"
-	cherryNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
+	superNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
 )
 
 type Component struct {
@@ -29,5 +29,5 @@ func (c *Component) OnStop() {
 }
 
 func (c *Component) loadCluster() face.ICluster {
-	return cherryNatsCluster.New(c.App())
+	return superNatsCluster.New(c.App())
 }
