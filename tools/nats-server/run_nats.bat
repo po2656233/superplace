@@ -1,1 +1,1 @@
-nats-server.exe
+Start %~dp0nats-server.exe
