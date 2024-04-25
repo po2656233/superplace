@@ -1,8 +1,8 @@
 package config
 
 import (
-	"path/filepath"
 	cerror "github.com/po2656233/superplace/logger/error"
+	"path/filepath"
 
 	cfile "github.com/po2656233/superplace/extend/file"
 	cjson "github.com/po2656233/superplace/extend/json"

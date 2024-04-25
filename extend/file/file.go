@@ -95,11 +95,19 @@ func GetCurrentDirectory() string {
 
 func GetCurrentPath() string {
 	var absPath string
-	_, filename, _, ok := runtime.Caller(0)
+	_, filename, _, ok := runtime.Caller(1)
 	if ok {
 		absPath = path.Dir(filename)
 	}
 	return absPath
+}
+
+func GetWorkDir() string {
+	p, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	return p
 }
 
 func GetStackDir() []string {
@@ -133,14 +141,6 @@ func GetStackDir() []string {
 	return dir
 }
 
-func GetWorkDir() string {
-	p, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	return p
-}
-
 func JoinPath(elem ...string) (string, error) {
 	filePath := filepath.Join(elem...)
 
@@ -158,6 +158,21 @@ func CheckPath(filePath string) error {
 	}
 
 	return err
+}
+
+func GetScriptName(name string) string {
+	ext := path.Ext(name)
+	switch runtime.GOOS {
+	case "windows":
+		if ext != ".bat" {
+			name += ".bat"
+		}
+	case "linux":
+		if ext != ".sh" {
+			name += ".sh"
+		}
+	}
+	return name
 }
 
 func GetFileName(filePath string, removeExt bool) string {

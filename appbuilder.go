@@ -2,11 +2,11 @@ package superplace
 
 import (
 	"github.com/po2656233/superplace/extend/proc"
-	exReflect "github.com/po2656233/superplace/extend/reflect"
 	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	ccluster "github.com/po2656233/superplace/net/cluster"
 	cdiscovery "github.com/po2656233/superplace/net/discovery"
-	"path"
+	"github.com/po2656233/superplace/tools"
 )
 
 type (
@@ -45,10 +45,11 @@ func (p *AppBuilder) Startup() {
 		discovery := cdiscovery.New()
 		app.SetDiscovery(discovery)
 		app.Register(discovery)
-		abs := exReflect.GetFuncPath()
-		natsProc := path.Join(abs, "tools", "nats-server", "nats-server")
-		if ok, _ := proc.CheckProcRunning(natsProc); !ok {
-			proc.StartProcess(natsProc, "")
+
+		// 启动nats
+		if ok, _ := proc.CheckProcRunning("nats-server"); !ok {
+			pid, err := proc.StartProcess(tools.GetNatsSHFile(), "")
+			clog.Infof("nats-server START pid:%v err:%v", pid, err)
 		}
 	}
 
