@@ -15,6 +15,7 @@ import (
 
 const (
 	connectFormat = "%s:%s@(%s)/%s?charset=utf8&parseTime=True&loc=Local"
+	dbIds         = "db_id_list"
 )
 
 type (
@@ -68,7 +69,7 @@ func parseMysqlConfig(groupId string, item face.ProfileJSON) *mySqlConfig {
 
 func (s *Component) Init() {
 	// load only the database contained in the `db_id_list`
-	dbIdList := s.App().Settings().Get("db_id_list")
+	dbIdList := s.App().Settings().Get(dbIds)
 	if dbIdList.LastError() != nil || dbIdList.Size() < 1 {
 		clog.Warnf("[nodeId = %s] `db_id_list` property not exists.", s.App().NodeId())
 		return

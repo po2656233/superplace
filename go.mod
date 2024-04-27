@@ -1,6 +1,6 @@
 module github.com/po2656233/superplace
 
-go 1.18
+go 1.19
 
 require (
 	github.com/garyburd/redigo v1.6.4
