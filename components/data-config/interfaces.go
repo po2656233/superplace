@@ -1,4 +1,4 @@
-package dataConfig
+package superDataConfig
 
 type (
 	// IDataConfig 数据配置接口

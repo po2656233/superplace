@@ -1,4 +1,4 @@
-package dataConfig
+package superDataConfig
 
 import (
 	jsoniter "github.com/json-iterator/go"

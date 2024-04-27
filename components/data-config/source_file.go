@@ -1,4 +1,4 @@
-package dataConfig
+package superDataConfig
 
 import (
 	"os"

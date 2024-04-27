@@ -1,4 +1,4 @@
-package dataConfig
+package superDataConfig
 
 var (
 	parserMap     = make(map[string]IDataParser) //文件格式解析器
