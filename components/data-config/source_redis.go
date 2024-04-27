@@ -3,7 +3,6 @@ package superDataConfig
 import (
 	"context"
 	"fmt"
-	"github.com/garyburd/redigo/redis"
 
 	"github.com/go-redis/redis/v8"
 	cprofile "github.com/po2656233/superplace/config"
