@@ -8,7 +8,7 @@ import (
 )
 
 func BenchmarkWrite(b *testing.B) {
-	config := config2.defaultConsoleConfig()
+	config := config2.DefaultLogConfig()
 	config.EnableConsole = false
 	config.EnableWriteFile = true
 	config.FileLinkPath = "logs/log1.log"
