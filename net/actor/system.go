@@ -196,7 +196,7 @@ func (p *System) Call(source, target, funcName string, arg interface{}) int32 {
 }
 
 // CallWait 发送远程消息(等待回复)
-func (p *System) CallWait(source, target, funcName string, arg interface{}, reply interface{}) int32 {
+func (p *System) CallWait(source, target, funcName string, arg interface{}) (reply interface{}, code int32) {
 	sourcePath, err := face.ToActorPath(source)
 	if err != nil {
 		clog.Warnf("[CallWait] Source path error. [source = %s, target = %s, funcName = %s, err = %v]",
@@ -205,7 +205,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 			funcName,
 			err,
 		)
-		return ccode.ActorConvertPathError
+		return reply, ccode.ActorConvertPathError
 	}
 
 	targetPath, err := face.ToActorPath(target)
@@ -216,7 +216,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 			funcName,
 			err,
 		)
-		return ccode.ActorConvertPathError
+		return reply, ccode.ActorConvertPathError
 	}
 
 	if source == target {
@@ -225,7 +225,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 			target,
 			funcName,
 		)
-		return ccode.ActorSourceEqualTarget
+		return reply, ccode.ActorSourceEqualTarget
 	}
 
 	if len(funcName) < 1 {
@@ -234,7 +234,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 			target,
 			funcName,
 		)
-		return ccode.ActorFuncNameError
+		return reply, ccode.ActorFuncNameError
 	}
 	// forward to remote actor
 	if targetPath.NodeID != "" && targetPath.NodeID != sourcePath.NodeID {
@@ -244,20 +244,20 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 			argsBytes, err := p.app.Serializer().Marshal(arg)
 			if err != nil {
 				clog.Warnf("[CallWait] Marshal arg error. [targetPath = %s, error = %s]", target, err)
-				return ccode.ActorMarshalError
+				return nil, ccode.ActorMarshalError
 			}
 			clusterPacket.ArgBytes = argsBytes
 		}
 
 		rsp := p.app.Cluster().RequestRemote(targetPath.NodeID, clusterPacket, p.callTimeout)
 		if ccode.IsFail(rsp.Code) {
-			return rsp.Code
+			return nil, rsp.Code
 		}
 
 		if reply != nil {
 			if err = p.app.Serializer().Unmarshal(rsp.Data, reply); err != nil {
 				clog.Warnf("[CallWait] Marshal reply error. [targetPath = %s, error = %s]", target, err)
-				return ccode.ActorMarshalError
+				return reply, ccode.ActorMarshalError
 			}
 		}
 
@@ -268,12 +268,12 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 
 		if sourcePath.ActorID == targetPath.ActorID {
 			if sourcePath.ChildID == targetPath.ChildID {
-				return ccode.ActorSourceEqualTarget
+				return reply, ccode.ActorSourceEqualTarget
 			}
 
 			childActor, found := p.GetChildActor(targetPath.ActorID, targetPath.ChildID)
 			if !found {
-				return ccode.ActorChildIDNotFound
+				return reply, ccode.ActorChildIDNotFound
 			}
 
 			childActor.PostRemote(message)
@@ -281,7 +281,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 		} else {
 			if !p.PostRemote(message) {
 				clog.Warnf("[CallWait] Post remote fail. [source = %s, target = %s, funcName = %s]", source, target, funcName)
-				return ccode.ActorCallFail
+				return reply, ccode.ActorCallFail
 			}
 			result = <-message.ChanResult
 		}
@@ -292,11 +292,11 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 				clog.Warnf("[CallWait] Response is nil. [targetPath = %s]",
 					target,
 				)
-				return ccode.ActorCallFail
+				return reply, ccode.ActorCallFail
 			}
 
 			if ccode.IsFail(rsp.Code) {
-				return rsp.Code
+				return reply, rsp.Code
 			}
 
 			if reply != nil {
@@ -306,13 +306,13 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 						target,
 						err,
 					)
-					return ccode.ActorUnmarshalError
+					return reply, ccode.ActorUnmarshalError
 				}
 			}
 		}
 	}
 
-	return ccode.OK
+	return reply, ccode.OK
 }
 
 // PostRemote 提交远程消息

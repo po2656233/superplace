@@ -14,7 +14,7 @@ type (
 		PostLocal(m *Message) bool
 		PostEvent(data IEventData)
 		Call(source, target, funcName string, arg interface{}) int32
-		CallWait(source, target, funcName string, arg interface{}, reply interface{}) int32
+		CallWait(source, target, funcName string, req interface{}) (reply interface{}, code int32)
 		SetLocalInvoke(invoke InvokeFunc)
 		SetRemoteInvoke(invoke InvokeFunc)
 		SetCallTimeout(d time.Duration)
