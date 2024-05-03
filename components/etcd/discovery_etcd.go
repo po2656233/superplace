@@ -25,7 +25,8 @@ var (
 
 // ETCD etcd方式发现服务
 type ETCD struct {
-	app face.IApplication
+	face.Component
+	//app face.IApplication
 	cdiscovery.DiscoveryDefault
 	prefix  string
 	config  clientv3.Config
@@ -44,7 +45,7 @@ func (p *ETCD) Name() string {
 
 func (p *ETCD) Load(app face.IApplication) {
 	p.DiscoveryDefault.PreInit()
-	p.app = app
+	p.Set(app)
 	p.ttl = 10
 
 	clusterConfig := cprofile.GetConfig("cluster").GetConfig(p.Name())
@@ -63,7 +64,7 @@ func (p *ETCD) Load(app face.IApplication) {
 }
 
 func (p *ETCD) OnStop() {
-	key := fmt.Sprintf(registerKeyFormat, p.app.NodeId())
+	key := fmt.Sprintf(registerKeyFormat, p.App().NodeId())
 	_, err := p.cli.Delete(context.Background(), key)
 	clog.Infof("etcd stopping! err = %v", err)
 
@@ -137,7 +138,7 @@ func (p *ETCD) getLeaseId() {
 			case <-keepaliveChan:
 				{
 				}
-			case die := <-p.app.DieChan():
+			case die := <-p.App().DieChan():
 				{
 					if die {
 						return
@@ -150,9 +151,9 @@ func (p *ETCD) getLeaseId() {
 
 func (p *ETCD) register() {
 	registerMember := &cproto.Member{
-		NodeId:   p.app.NodeId(),
-		NodeType: p.app.NodeType(),
-		Address:  p.app.RpcAddress(),
+		NodeId:   p.App().NodeId(),
+		NodeType: p.App().NodeType(),
+		Address:  p.App().RpcAddress(),
 		Settings: make(map[string]string),
 	}
 
@@ -162,7 +163,7 @@ func (p *ETCD) register() {
 		return
 	}
 
-	key := fmt.Sprintf(registerKeyFormat, p.app.NodeId())
+	key := fmt.Sprintf(registerKeyFormat, p.App().NodeId())
 	_, err = p.cli.Put(context.Background(), key, jsonString, clientv3.WithLease(p.leaseID))
 	if err != nil {
 		clog.Fatal(err)

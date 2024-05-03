@@ -254,7 +254,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (rep
 			return nil, rsp.Code
 		}
 
-		if reply != nil {
+		if rsp.Data != nil {
 			if err = p.app.Serializer().Unmarshal(rsp.Data, reply); err != nil {
 				clog.Warnf("[CallWait] Marshal reply error. [targetPath = %s, error = %s]", target, err)
 				return reply, ccode.ActorMarshalError
@@ -299,7 +299,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (rep
 				return reply, rsp.Code
 			}
 
-			if reply != nil {
+			if rsp.Data != nil {
 				err = p.app.Serializer().Unmarshal(rsp.Data, reply)
 				if err != nil {
 					clog.Warnf("[CallWait] Unmarshal reply error. [targetPath = %s, error = %s]",
