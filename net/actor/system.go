@@ -2,27 +2,26 @@ package actor
 
 import (
 	ccode "github.com/po2656233/superplace/const/code"
+	cutils "github.com/po2656233/superplace/extend/utils"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
+	cproto "github.com/po2656233/superplace/net/proto"
 	"strings"
 	"sync"
 	"time"
-
-	cutils "github.com/po2656233/superplace/extend/utils"
-	face "github.com/po2656233/superplace/facade"
-	cproto "github.com/po2656233/superplace/net/proto"
 )
 
 type (
 	// System Actor系统
 	System struct {
-		app              face.IApplication
-		actorMap         *sync.Map       // key:actorID, value:*actor
-		localInvokeFunc  face.InvokeFunc // default local func
-		remoteInvokeFunc face.InvokeFunc // default remote func
-		wg               *sync.WaitGroup // wait group
-		callTimeout      time.Duration   // call调用超时
-		arrivalTimeOut   int64           // message到达超时(毫秒)
-		executionTimeout int64           // 消息执行超时(毫秒)
+		app              cfacade.IApplication
+		actorMap         *sync.Map          // key:actorID, value:*actor
+		localInvokeFunc  cfacade.InvokeFunc // default local func
+		remoteInvokeFunc cfacade.InvokeFunc // default remote func
+		wg               *sync.WaitGroup    // wait group
+		callTimeout      time.Duration      // call调用超时
+		arrivalTimeOut   int64              // message到达超时(毫秒)
+		executionTimeout int64              // 消息执行超时(毫秒)
 	}
 )
 
@@ -40,7 +39,7 @@ func NewSystem() *System {
 	return system
 }
 
-func (p *System) SetApp(app face.IApplication) {
+func (p *System) SetApp(app cfacade.IApplication) {
 	p.app = app
 }
 
@@ -71,7 +70,7 @@ func (p *System) Stop() {
 }
 
 // GetIActor 根据ActorID获取IActor
-func (p *System) GetIActor(id string) (face.IActor, bool) {
+func (p *System) GetIActor(id string) (cfacade.IActor, bool) {
 	return p.GetActor(id)
 }
 
@@ -100,7 +99,7 @@ func (p *System) removeActor(actorID string) {
 }
 
 // CreateActor 创建Actor
-func (p *System) CreateActor(id string, handler face.IActorHandler) (face.IActor, error) {
+func (p *System) CreateActor(id string, handler cfacade.IActorHandler) (cfacade.IActor, error) {
 	if strings.TrimSpace(id) == "" {
 		return nil, ErrActorIDIsNil
 	}
@@ -140,7 +139,7 @@ func (p *System) Call(source, target, funcName string, arg interface{}) int32 {
 		return ccode.ActorFuncNameError
 	}
 
-	targetPath, err := face.ToActorPath(target)
+	targetPath, err := cfacade.ToActorPath(target)
 	if err != nil {
 		clog.Warnf("[Call] Target path error. [source = %s, target = %s, funcName = %s, err = %v]",
 			source,
@@ -180,7 +179,7 @@ func (p *System) Call(source, target, funcName string, arg interface{}) int32 {
 			return ccode.ActorPublishRemoteError
 		}
 	} else {
-		remoteMsg := face.GetMessage()
+		remoteMsg := cfacade.GetMessage()
 		remoteMsg.Source = source
 		remoteMsg.Target = target
 		remoteMsg.FuncName = funcName
@@ -196,8 +195,8 @@ func (p *System) Call(source, target, funcName string, arg interface{}) int32 {
 }
 
 // CallWait 发送远程消息(等待回复)
-func (p *System) CallWait(source, target, funcName string, arg interface{}) (interface{}, int32) {
-	sourcePath, err := face.ToActorPath(source)
+func (p *System) CallWait(source, target, funcName string, arg interface{}, reply interface{}) int32 {
+	sourcePath, err := cfacade.ToActorPath(source)
 	if err != nil {
 		clog.Warnf("[CallWait] Source path error. [source = %s, target = %s, funcName = %s, err = %v]",
 			source,
@@ -205,10 +204,10 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (int
 			funcName,
 			err,
 		)
-		return nil, ccode.ActorConvertPathError
+		return ccode.ActorConvertPathError
 	}
 
-	targetPath, err := face.ToActorPath(target)
+	targetPath, err := cfacade.ToActorPath(target)
 	if err != nil {
 		clog.Warnf("[CallWait] Target path error. [source = %s, target = %s, funcName = %s, err = %v]",
 			source,
@@ -216,7 +215,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (int
 			funcName,
 			err,
 		)
-		return nil, ccode.ActorConvertPathError
+		return ccode.ActorConvertPathError
 	}
 
 	if source == target {
@@ -225,7 +224,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (int
 			target,
 			funcName,
 		)
-		return nil, ccode.ActorSourceEqualTarget
+		return ccode.ActorSourceEqualTarget
 	}
 
 	if len(funcName) < 1 {
@@ -234,7 +233,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (int
 			target,
 			funcName,
 		)
-		return nil, ccode.ActorFuncNameError
+		return ccode.ActorFuncNameError
 	}
 	// forward to remote actor
 	if targetPath.NodeID != "" && targetPath.NodeID != sourcePath.NodeID {
@@ -244,56 +243,79 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}) (int
 			argsBytes, err := p.app.Serializer().Marshal(arg)
 			if err != nil {
 				clog.Warnf("[CallWait] Marshal arg error. [targetPath = %s, error = %s]", target, err)
-				return nil, ccode.ActorMarshalError
+				return ccode.ActorMarshalError
 			}
 			clusterPacket.ArgBytes = argsBytes
 		}
 
 		rsp := p.app.Cluster().RequestRemote(targetPath.NodeID, clusterPacket, p.callTimeout)
-		ccode.IsFail(rsp.Code)
-		return rsp.Data, rsp.Code
-
-	}
-
-	var result interface{}
-	message := face.BuildMessage(source, target, funcName, arg)
-	if sourcePath.ActorID == targetPath.ActorID {
-		if sourcePath.ChildID == targetPath.ChildID {
-			return nil, ccode.ActorSourceEqualTarget
-		}
-
-		childActor, found := p.GetChildActor(targetPath.ActorID, targetPath.ChildID)
-		if !found {
-			return nil, ccode.ActorChildIDNotFound
-		}
-
-		childActor.PostRemote(message)
-		result = <-message.ChanResult
-	} else {
-		if !p.PostRemote(message) {
-			clog.Warnf("[CallWait] Post remote fail. [source = %s, target = %s, funcName = %s]", source, target, funcName)
-			return nil, ccode.ActorCallFail
-		}
-		result = <-message.ChanResult
-	}
-	if result != nil {
-		rsp := result.(*cproto.Response)
-		if rsp == nil {
-			clog.Warnf("[CallWait] Response is nil. [targetPath = %s]",
-				target,
-			)
-			return nil, ccode.ActorCallFail
-		}
 		if ccode.IsFail(rsp.Code) {
-			return rsp.Data, rsp.Code
+			return rsp.Code
 		}
-		return rsp.Data, rsp.Code
+
+		if reply != nil {
+			if err = p.app.Serializer().Unmarshal(rsp.Data, reply); err != nil {
+				clog.Warnf("[CallWait] Marshal reply error. [targetPath = %s, error = %s]", target, err)
+				return ccode.ActorMarshalError
+			}
+		}
+
+	} else {
+		message := cfacade.BuildMessage(source, target, funcName, arg)
+
+		var result interface{}
+
+		if sourcePath.ActorID == targetPath.ActorID {
+			if sourcePath.ChildID == targetPath.ChildID {
+				return ccode.ActorSourceEqualTarget
+			}
+
+			childActor, found := p.GetChildActor(targetPath.ActorID, targetPath.ChildID)
+			if !found {
+				return ccode.ActorChildIDNotFound
+			}
+
+			childActor.PostRemote(message)
+			result = <-message.ChanResult
+		} else {
+			if !p.PostRemote(message) {
+				clog.Warnf("[CallWait] Post remote fail. [source = %s, target = %s, funcName = %s]", source, target, funcName)
+				return ccode.ActorCallFail
+			}
+			result = <-message.ChanResult
+		}
+
+		if result != nil {
+			rsp := result.(*cproto.Response)
+			if rsp == nil {
+				clog.Warnf("[CallWait] Response is nil. [targetPath = %s]",
+					target,
+				)
+				return ccode.ActorCallFail
+			}
+
+			if ccode.IsFail(rsp.Code) {
+				return rsp.Code
+			}
+
+			if reply != nil {
+				err = p.app.Serializer().Unmarshal(rsp.Data, reply)
+				if err != nil {
+					clog.Warnf("[CallWait] Unmarshal reply error. [targetPath = %s, error = %s]",
+						target,
+						err,
+					)
+					return ccode.ActorUnmarshalError
+				}
+			}
+		}
 	}
-	return result, ccode.OK
+
+	return ccode.OK
 }
 
 // PostRemote 提交远程消息
-func (p *System) PostRemote(m *face.Message) bool {
+func (p *System) PostRemote(m *cfacade.Message) bool {
 	if m == nil {
 		clog.Error("Message is nil.")
 		return false
@@ -315,7 +337,7 @@ func (p *System) PostRemote(m *face.Message) bool {
 }
 
 // PostLocal 提交本地消息
-func (p *System) PostLocal(m *face.Message) bool {
+func (p *System) PostLocal(m *cfacade.Message) bool {
 	if m == nil {
 		clog.Error("Message is nil.")
 		return false
@@ -338,7 +360,7 @@ func (p *System) PostLocal(m *face.Message) bool {
 }
 
 // PostEvent 提交事件
-func (p *System) PostEvent(data face.IEventData) {
+func (p *System) PostEvent(data cfacade.IEventData) {
 	if data == nil {
 		clog.Error("[PostEvent] Event is nil.")
 		return
@@ -354,13 +376,13 @@ func (p *System) PostEvent(data face.IEventData) {
 	})
 }
 
-func (p *System) SetLocalInvoke(fn face.InvokeFunc) {
+func (p *System) SetLocalInvoke(fn cfacade.InvokeFunc) {
 	if fn != nil {
 		p.localInvokeFunc = fn
 	}
 }
 
-func (p *System) SetRemoteInvoke(fn face.InvokeFunc) {
+func (p *System) SetRemoteInvoke(fn cfacade.InvokeFunc) {
 	if fn != nil {
 		p.remoteInvokeFunc = fn
 	}

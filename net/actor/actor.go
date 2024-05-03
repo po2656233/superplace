@@ -307,8 +307,8 @@ func (p *Actor) Call(targetPath, funcName string, arg interface{}) int32 {
 	return p.system.Call(p.path.String(), targetPath, funcName, arg)
 }
 
-func (p *Actor) CallWait(targetPath, funcName string, arg interface{}) (interface{}, int32) {
-	return p.system.CallWait(p.path.String(), targetPath, funcName, arg)
+func (p *Actor) CallWait(targetPath, funcName string, arg, reply interface{}) int32 {
+	return p.system.CallWait(p.path.String(), targetPath, funcName, arg, reply)
 }
 
 // LastAt second
