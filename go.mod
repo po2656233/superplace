@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/golang/protobuf v1.5.4
 	github.com/google/gops v0.3.28
 	github.com/gorilla/websocket v1.5.1
 	github.com/json-iterator/go v1.1.12
