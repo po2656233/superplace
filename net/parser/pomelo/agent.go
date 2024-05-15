@@ -155,6 +155,7 @@ func (a *Agent) readChan() {
 	for {
 		packets, isBreak, err := pomeloPacket.Read(a.conn)
 		if isBreak || err != nil {
+			clog.Warn(err)
 			return
 		}
 
