@@ -32,6 +32,7 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/po2656233/superplace v1.0.2 h1:35l3fz6nk3R0V38IutxotSDH9d3smZu04phR8ZfIyMs=
 github.com/po2656233/superplace v1.0.2/go.mod h1:MVce/XwF3Ch3Wvzb5rcKRSLrSbNpUuWOF5nTKEmpoAQ=
+github.com/po2656233/superplace v1.1.0/go.mod h1:IGSDsi9V3gutAWUcIAW+DUGWu+G9qPzYD4Mao8o+Nzg=
 github.com/radovskyb/watcher v1.0.7 h1:AYePLih6dpmS32vlHfhCeli8127LzkIgwJGcwwe8tUE=
 github.com/radovskyb/watcher v1.0.7/go.mod h1:78okwvY5wPdzcb1UYnip1pvrZNIVEIh/Cm+ZuvsUYIg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

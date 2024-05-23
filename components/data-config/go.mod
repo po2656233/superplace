@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/json-iterator/go v1.1.12
-	github.com/po2656233/superplace v2.0.2
+	github.com/po2656233/superplace v1.1.0
 	github.com/radovskyb/watcher v1.0.7
 )
 
