@@ -7,7 +7,7 @@ import (
 )
 
 type gormLogger struct {
-	log *clog.CherryLogger
+	log *clog.SuperLogger
 }
 
 func (l gormLogger) Printf(s string, i ...interface{}) {
