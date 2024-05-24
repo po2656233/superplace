@@ -3,7 +3,7 @@ module github.com/po2656233/superplace/components/gorm
 go 1.20
 
 require (
-	github.com/po2656233/superplace v1.1.0
+	github.com/po2656233/superplace v1.1.1
 	gorm.io/driver/mysql v1.5.6
 	gorm.io/gorm v1.25.10
 )

@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/po2656233/superplace v1.1.0
+	github.com/po2656233/superplace v1.1.1
 )
 
 require (

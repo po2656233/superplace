@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/json-iterator/go v1.1.12
-	github.com/po2656233/superplace v1.1.0
+	github.com/po2656233/superplace v1.1.1
 	go.etcd.io/etcd/api/v3 v3.5.13
 	go.etcd.io/etcd/client/v3 v3.5.13
 )

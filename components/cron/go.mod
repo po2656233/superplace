@@ -3,7 +3,7 @@ module github.com/po2656233/superplace/components/cron
 go 1.20
 
 require (
-	github.com/po2656233/superplace v1.1.0
+	github.com/po2656233/superplace v1.1.1
 	github.com/robfig/cron/v3 v3.0.1
 )
 
