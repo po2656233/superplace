@@ -72,6 +72,12 @@ func Obj() *logrus.Logger {
 	return singleLog
 }
 
+func SetTextFormatter() {
+	singleLog.SetFormatter(&logrus.TextFormatter{})
+}
+func SetJsonFormatter() {
+	singleLog.SetFormatter(&logrus.JSONFormatter{})
+}
 func AddEmailHook(eConf *cprofile.EmailHook) error {
 	//parameter"APPLICATION_NAME", "HOST", PORT, "FROM", "TO"
 	//首先开启smtp服务,最后两个参数是smtp的用户名和密码

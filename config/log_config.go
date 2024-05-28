@@ -60,7 +60,7 @@ type (
 func DefaultLogConfig() *LogConfig {
 	config := &LogConfig{
 		LogLevel:        "debug",
-		StackLevel:      "error",
+		StackLevel:      "panic",
 		EnableConsole:   true,
 		EnableWriteFile: false,
 		MaxAge:          7,
@@ -78,7 +78,7 @@ func DefaultLogConfig() *LogConfig {
 func NewConfig(jsonConfig face.ProfileJSON) (*LogConfig, error) {
 	config := &LogConfig{
 		LogLevel:        jsonConfig.GetString("level", "debug"),
-		StackLevel:      jsonConfig.GetString("stack_level", "error"),
+		StackLevel:      jsonConfig.GetString("stack_level", "panic"),
 		EnableConsole:   jsonConfig.GetBool("enable_console", true),
 		EnableWriteFile: jsonConfig.GetBool("enable_write_file", false),
 		MaxAge:          jsonConfig.GetInt("max_age", 7),

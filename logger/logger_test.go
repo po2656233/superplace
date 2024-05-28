@@ -3,8 +3,6 @@ package logger
 import (
 	config2 "github.com/po2656233/superplace/config"
 	"testing"
-
-	ctime "github.com/po2656233/superplace/extend/time"
 )
 
 func BenchmarkWrite(b *testing.B) {
@@ -17,6 +15,9 @@ func BenchmarkWrite(b *testing.B) {
 	log1 := NewConfigLogger(config)
 
 	for i := 0; i < b.N; i++ {
-		log1.Debug(ctime.Now().ToDateTimeFormat())
+		log1.Debug(1)
+		log1.Info(2)
+		log1.Error(3)
+		log1.Panic(4)
 	}
 }
