@@ -19,13 +19,10 @@ require (
 
 require (
 	github.com/garyburd/redigo v1.6.4 // indirect
-	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/klauspost/compress v1.17.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/nats-io/go-nats v1.7.2 // indirect
-	github.com/nats-io/go-nats-streaming v0.4.4 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
