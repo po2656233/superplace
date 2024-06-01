@@ -35,8 +35,11 @@ func GetFuncInfo(fn interface{}) (FuncInfo, error) {
 		return nilFuncInfo, cerr.FuncTypeError
 	}
 	fullName := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
-	funcName := cstring.CutLastString(fullName, ".", "-")
-	fileName := cstring.CutLastString(fullName, ".", ".")
+	fileName := cstring.CutLastString(fullName, "/", ".")
+	funcName := cstring.CutLastString(fullName, ".", ".")
+	if strings.Contains(fullName, "-") {
+		funcName = cstring.CutLastString(fullName, ".", "-")
+	}
 	var inArgs []reflect.Type
 	for i := 0; i < typ.NumIn(); i++ {
 		t := typ.In(i)
