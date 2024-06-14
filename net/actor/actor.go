@@ -6,7 +6,7 @@ import (
 	"time"
 
 	cutils "github.com/po2656233/superplace/extend/utils"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	"go.uber.org/zap/zapcore"
 )
 
@@ -37,19 +37,19 @@ type (
 	State int
 
 	Actor struct {
-		system           *System            // actor system
-		path             *face.ActorPath    // actor path
-		state            State              // actor state
-		close            chan struct{}      // close flag
-		handler          face.IActorHandler // actor handler
-		localMail        *mailbox           // local message mailbox
-		remoteMail       *mailbox           // remote message mailbox
-		event            *actorEvent        // event
-		child            *actorChild        // child actor
-		timer            *actorTimer        // timer
-		lastAt           int64              // last process time
-		arrivalElapsed   int64              // arrival elapsed for message
-		executionElapsed int64              // execution elapsed for message
+		system           *System               // actor system
+		path             *cfacade.ActorPath    // actor path
+		state            State                 // actor state
+		close            chan struct{}         // close flag
+		handler          cfacade.IActorHandler // actor handler
+		localMail        *mailbox              // local message mailbox
+		remoteMail       *mailbox              // remote message mailbox
+		event            *actorEvent           // event
+		child            *actorChild           // child actor
+		timer            *actorTimer           // timer
+		lastAt           int64                 // last process time
+		arrivalElapsed   int64                 // arrival elapsed for message
+		executionElapsed int64                 // execution elapsed for message
 	}
 )
 
@@ -169,7 +169,7 @@ func (p *Actor) processEvent() {
 	p.event.funcInvoke(eventData)
 }
 
-func (p *Actor) invokeFunc(mb *mailbox, app face.IApplication, fn face.InvokeFunc, m *face.Message) {
+func (p *Actor) invokeFunc(mb *mailbox, app cfacade.IApplication, fn cfacade.InvokeFunc, m *cfacade.Message) {
 	funcInfo, found := mb.funcMap[m.FuncName]
 	if !found {
 		clog.Warnf("[%s] Function not found. [source = %s, target = %s -> %s]",
@@ -178,7 +178,6 @@ func (p *Actor) invokeFunc(mb *mailbox, app face.IApplication, fn face.InvokeFun
 			m.Target,
 			m.FuncName,
 		)
-		m.Recycle()
 		return
 	}
 
@@ -218,16 +217,15 @@ func (p *Actor) invokeFunc(mb *mailbox, app face.IApplication, fn face.InvokeFun
 				funcInfo.InArgs,
 			)
 		}
-		m.Recycle()
 	}()
 
 	fn(app, funcInfo, m)
 }
 
-func (p *Actor) findChildActor(m *face.Message) (*Actor, bool) {
+func (p *Actor) findChildActor(m *cfacade.Message) (*Actor, bool) {
 	// 如果当前actor为子actor,则终止本次消息处理
 	if p.path.IsChild() {
-		clog.Warnf("[findChildActor] Child actor cannot be created again。",
+		clog.Warnf("[findChildActor] Child actor cannot be created again。[target = %s->%s]",
 			m.Target,
 			m.FuncName,
 		)
@@ -283,7 +281,7 @@ func (p *Actor) State() State {
 	return p.state
 }
 
-func (p *Actor) App() face.IApplication {
+func (p *Actor) App() cfacade.IApplication {
 	return p.system.app
 }
 
@@ -295,7 +293,7 @@ func (p *Actor) ActorID() string {
 	return p.path.ActorID
 }
 
-func (p *Actor) Path() *face.ActorPath {
+func (p *Actor) Path() *cfacade.ActorPath {
 	return p.path
 }
 
@@ -307,7 +305,7 @@ func (p *Actor) Call(targetPath, funcName string, arg interface{}) int32 {
 	return p.system.Call(p.path.String(), targetPath, funcName, arg)
 }
 
-func (p *Actor) CallWait(targetPath, funcName string, arg, reply interface{}) int32 {
+func (p *Actor) CallWait(targetPath, funcName string, arg interface{}, reply interface{}) int32 {
 	return p.system.CallWait(p.path.String(), targetPath, funcName, arg, reply)
 }
 
@@ -340,7 +338,7 @@ func (p *Actor) Event() IEvent {
 	return p.event
 }
 
-func (p *Actor) Child() face.IActorChild {
+func (p *Actor) Child() cfacade.IActorChild {
 	return p.child
 }
 
@@ -348,26 +346,26 @@ func (p *Actor) Timer() ITimer {
 	return p.timer
 }
 
-func (p *Actor) PostRemote(m *face.Message) {
+func (p *Actor) PostRemote(m *cfacade.Message) {
 	p.remoteMail.Push(m)
 }
 
-func (p *Actor) PostLocal(m *face.Message) {
+func (p *Actor) PostLocal(m *cfacade.Message) {
 	p.localMail.Push(m)
 }
 
-func (p *Actor) PostEvent(data face.IEventData) {
+func (p *Actor) PostEvent(data cfacade.IEventData) {
 	p.system.PostEvent(data)
 }
 
-func newActor(actorID, childID string, handler face.IActorHandler, c *System) (Actor, error) {
+func newActor(actorID, childID string, handler cfacade.IActorHandler, c *System) (Actor, error) {
 	if strings.TrimSpace(actorID) == "" {
 		clog.Error("[newActor] actor id is nil.")
 		return _nilActor, ErrActorIDIsNil
 	}
 
 	thisActor := Actor{
-		path: &face.ActorPath{
+		path: &cfacade.ActorPath{
 			NodeID:  c.NodeId(),
 			ActorID: actorID,
 			ChildID: childID,

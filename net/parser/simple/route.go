@@ -1,7 +1,7 @@
 package simple
 
 import (
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cproto "github.com/po2656233/superplace/net/proto"
 )
@@ -40,13 +40,13 @@ func DefaultDataRoute(agent *Agent, msg *Message, route *NodeRoute) {
 
 	// current node
 	if agent.NodeType() == route.NodeType {
-		targetPath := face.NewChildPath(agent.NodeId(), route.ActorID, session.Sid)
+		targetPath := cfacade.NewChildPath(agent.NodeId(), route.ActorID, session.Sid)
 		LocalDataRoute(agent, session, msg, route, targetPath)
 		return
 	}
 
 	if !session.IsBind() {
-		clog.Warnf("[sid = %s,uid = %d] Session is not bind with UID. failed to forward message.[route = %+v]",
+		clog.Errorf("[sid = %s,uid = %d] Session is not bind with UID. failed to forward message.[route = %+v]",
 			agent.SID(),
 			agent.UID(),
 			route,
@@ -59,19 +59,26 @@ func DefaultDataRoute(agent *Agent, msg *Message, route *NodeRoute) {
 		return
 	}
 
-	targetPath := face.NewPath(member.GetNodeId(), route.ActorID)
-	ClusterLocalDataRoute(agent, session, msg, route, member.GetNodeId(), targetPath)
+	targetPath := cfacade.NewPath(member.GetNodeId(), route.ActorID)
+	if err := ClusterLocalDataRoute(agent, session, msg, route, member.GetNodeId(), targetPath); err != nil {
+		clog.Errorf("[sid = %s,uid = %d] [route = %+v] ClusterLocalDataRoute err:%v.",
+			agent.SID(),
+			agent.UID(),
+			route,
+			err,
+		)
+	}
 }
 
 func LocalDataRoute(agent *Agent, session *cproto.Session, msg *Message, nodeRoute *NodeRoute, targetPath string) {
-	message := face.GetMessage()
+	message := cfacade.GetMessage()
 	message.Source = session.AgentPath
 	message.Target = targetPath
 	message.FuncName = nodeRoute.FuncName
 	message.Session = session
 	message.Args = msg.Data
 
-	agent.ActorSystem().PostLocal(message)
+	agent.ActorSystem().PostLocal(&message)
 }
 
 func ClusterLocalDataRoute(agent *Agent, session *cproto.Session, msg *Message, nodeRoute *NodeRoute, nodeID, targetPath string) error {
@@ -80,7 +87,7 @@ func ClusterLocalDataRoute(agent *Agent, session *cproto.Session, msg *Message, 
 	clusterPacket.TargetPath = targetPath
 	clusterPacket.FuncName = nodeRoute.FuncName
 	clusterPacket.Session = session   // agent session
-	clusterPacket.ArgBytes = msg.Data // packet -> message -> base
+	clusterPacket.ArgBytes = msg.Data // packet -> message -> data
 
 	return agent.Cluster().PublishLocal(nodeID, clusterPacket)
 }

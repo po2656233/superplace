@@ -10,7 +10,7 @@ import (
 
 	"github.com/nats-io/nats.go"
 	cprofile "github.com/po2656233/superplace/config"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	cnats "github.com/po2656233/superplace/net/nats"
 	cproto "github.com/po2656233/superplace/net/proto"
 	"go.uber.org/zap/zapcore"
@@ -18,7 +18,7 @@ import (
 
 type (
 	Cluster struct {
-		app        face.IApplication
+		app        cfacade.IApplication
 		bufferSize int
 		prefix     string
 		local      *natsSubject
@@ -28,7 +28,7 @@ type (
 	OptionFunc func(o *Cluster)
 )
 
-func New(app face.IApplication, options ...OptionFunc) face.ICluster {
+func New(app cfacade.IApplication, options ...OptionFunc) cfacade.ICluster {
 	cluster := &Cluster{
 		app:        app,
 		bufferSize: 1024,
@@ -109,7 +109,7 @@ func (p *Cluster) localProcess() {
 			return
 		}
 
-		message := face.GetMessage()
+		message := cfacade.GetMessage()
 		message.BuildTime = packet.BuildTime
 		message.Source = packet.SourcePath
 		message.Target = packet.TargetPath
@@ -118,7 +118,7 @@ func (p *Cluster) localProcess() {
 		message.Session = packet.Session
 		message.Args = packet.ArgBytes
 
-		p.app.ActorSystem().PostLocal(message)
+		p.app.ActorSystem().PostLocal(&message)
 	}
 
 	for msg := range p.local.ch {
@@ -156,7 +156,7 @@ func (p *Cluster) remoteProcess() {
 			return
 		}
 
-		message := face.GetMessage()
+		message := cfacade.GetMessage()
 		message.BuildTime = packet.BuildTime
 		message.Source = packet.SourcePath
 		message.Target = packet.TargetPath
@@ -170,7 +170,7 @@ func (p *Cluster) remoteProcess() {
 			message.ClusterReply = natsMsg
 		}
 
-		p.app.ActorSystem().PostRemote(message)
+		p.app.ActorSystem().PostRemote(&message)
 	}
 
 	for msg := range p.remote.ch {
