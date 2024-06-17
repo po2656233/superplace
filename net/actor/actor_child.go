@@ -1,10 +1,10 @@
-package actor
+package cherryActor
 
 import (
 	"strings"
 	"sync"
 
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 )
 
 type actorChild struct {
@@ -31,7 +31,7 @@ func (p *actorChild) onStop() {
 	p.thisActor = nil
 }
 
-func (p *actorChild) Create(childID string, handler face.IActorHandler) (face.IActor, error) {
+func (p *actorChild) Create(childID string, handler cfacade.IActorHandler) (cfacade.IActor, error) {
 	if p.thisActor.path.IsChild() {
 		return nil, ErrForbiddenCreateChildActor
 	}
@@ -55,7 +55,7 @@ func (p *actorChild) Create(childID string, handler face.IActorHandler) (face.IA
 	return &childActor, nil
 }
 
-func (p *actorChild) Get(childID string) (face.IActor, bool) {
+func (p *actorChild) Get(childID string) (cfacade.IActor, bool) {
 	return p.GetActor(childID)
 }
 
@@ -72,7 +72,7 @@ func (p *actorChild) Remove(childID string) {
 	p.childActors.Delete(childID)
 }
 
-func (p *actorChild) Each(fn func(face.IActor)) {
+func (p *actorChild) Each(fn func(cfacade.IActor)) {
 	p.childActors.Range(func(key, value any) bool {
 		if actor, found := value.(*Actor); found {
 			fn(actor)

@@ -1,4 +1,4 @@
-package superNatsCluster
+package cherryNatsCluster
 
 import (
 	"github.com/nats-io/nats.go"

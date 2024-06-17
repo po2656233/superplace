@@ -2,14 +2,14 @@ package simple
 
 import (
 	"fmt"
-	clog "github.com/po2656233/superplace/logger"
 	"net"
 	"sync/atomic"
 	"time"
 
 	cnet "github.com/po2656233/superplace/extend/net"
 	cutils "github.com/po2656233/superplace/extend/utils"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	cproto "github.com/po2656233/superplace/net/proto"
 	"go.uber.org/zap/zapcore"
 )
@@ -21,15 +21,15 @@ const (
 
 type (
 	Agent struct {
-		face.IApplication                      // app
-		conn              net.Conn             // low-level conn fd
-		state             int32                // current agent state
-		session           *cproto.Session      // session
-		chDie             chan struct{}        // wait for close
-		chPending         chan *pendingMessage // push message queue
-		chWrite           chan []byte          // push bytes queue
-		lastAt            int64                // last heartbeat unix time stamp
-		onCloseFunc       []OnCloseFunc        // on close agent
+		cfacade.IApplication                      // app
+		conn                 net.Conn             // low-level conn fd
+		state                int32                // current agent state
+		session              *cproto.Session      // session
+		chDie                chan struct{}        // wait for close
+		chPending            chan *pendingMessage // push message queue
+		chWrite              chan []byte          // push bytes queue
+		lastAt               int64                // last heartbeat unix time stamp
+		onCloseFunc          []OnCloseFunc        // on close agent
 	}
 
 	pendingMessage struct {
@@ -40,7 +40,7 @@ type (
 	OnCloseFunc func(*Agent)
 )
 
-func NewAgent(app face.IApplication, conn net.Conn, session *cproto.Session) Agent {
+func NewAgent(app cfacade.IApplication, conn net.Conn, session *cproto.Session) Agent {
 	agent := Agent{
 		IApplication: app,
 		conn:         conn,
@@ -81,15 +81,15 @@ func (a *Agent) Session() *cproto.Session {
 	return a.session
 }
 
-func (a *Agent) UID() face.UID {
+func (a *Agent) UID() cfacade.UID {
 	return a.session.Uid
 }
 
-func (a *Agent) SID() face.SID {
+func (a *Agent) SID() cfacade.SID {
 	return a.session.Sid
 }
 
-func (a *Agent) Bind(uid face.UID) error {
+func (a *Agent) Bind(uid cfacade.UID) error {
 	return BindUID(a.SID(), uid)
 }
 
@@ -256,7 +256,7 @@ func (p *pendingMessage) String() string {
 func (a *Agent) processPending(pending *pendingMessage) {
 	data, err := a.Serializer().Marshal(pending.payload)
 	if err != nil {
-		clog.Warnf("[sid = %s,uid = %d] Payload marshal error. [base = %s]",
+		clog.Warnf("[sid = %s,uid = %d] Payload marshal error. [data = %s]",
 			a.SID(),
 			a.UID(),
 			pending.String(),

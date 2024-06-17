@@ -3,16 +3,16 @@ package pomeloClient
 import (
 	"time"
 
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 )
 
 type (
 	options struct {
-		serializer     face.ISerializer // protocol serializer
-		heartBeat      int              // second
-		requestTimeout time.Duration    // Send request timeout
-		handshake      string           // handshake content
-		isErrorBreak   bool             // an error occurs,is it break
+		serializer     cfacade.ISerializer // protocol serializer
+		heartBeat      int                 // second
+		requestTimeout time.Duration       // Send request timeout
+		handshake      string              // handshake content
+		isErrorBreak   bool                // an error occurs,is it break
 	}
 
 	Option func(options *options)
@@ -31,11 +31,11 @@ type (
 	}
 )
 
-func (p *options) Serializer() face.ISerializer {
+func (p *options) Serializer() cfacade.ISerializer {
 	return p.serializer
 }
 
-func WithSerializer(serializer face.ISerializer) Option {
+func WithSerializer(serializer cfacade.ISerializer) Option {
 	return func(options *options) {
 		options.serializer = serializer
 	}

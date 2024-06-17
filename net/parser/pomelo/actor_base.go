@@ -1,7 +1,7 @@
 package pomelo
 
 import (
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
 	cproto "github.com/po2656233/superplace/net/proto"
@@ -38,7 +38,7 @@ func (p *ActorBase) Broadcast(agentPath string, uidList []int64, allUID bool, ro
 	Broadcast(p, agentPath, uidList, allUID, route, v)
 }
 
-func Response(iActor face.IActor, agentPath, sid string, mid uint32, v interface{}) {
+func Response(iActor cfacade.IActor, agentPath, sid string, mid uint32, v interface{}) {
 	data, err := iActor.App().Serializer().Marshal(v)
 	if err != nil {
 		clog.Warnf("[Response] Marshal error. v = %+v", v)
@@ -54,7 +54,7 @@ func Response(iActor face.IActor, agentPath, sid string, mid uint32, v interface
 	iActor.Call(agentPath, ResponseFuncName, rsp)
 }
 
-func ResponseCode(iActor face.IActor, agentPath, sid string, mid uint32, statusCode int32) {
+func ResponseCode(iActor cfacade.IActor, agentPath, sid string, mid uint32, statusCode int32) {
 	rsp := &cproto.PomeloResponse{
 		Sid:  sid,
 		Mid:  mid,
@@ -64,7 +64,7 @@ func ResponseCode(iActor face.IActor, agentPath, sid string, mid uint32, statusC
 	iActor.Call(agentPath, ResponseFuncName, rsp)
 }
 
-func Push(iActor face.IActor, agentPath, sid, route string, v interface{}) {
+func Push(iActor cfacade.IActor, agentPath, sid, route string, v interface{}) {
 	if route == "" {
 		clog.Warn("[Push] route value error.")
 		return
@@ -85,7 +85,7 @@ func Push(iActor face.IActor, agentPath, sid, route string, v interface{}) {
 	iActor.Call(agentPath, PushFuncName, rsp)
 }
 
-func Kick(iActor face.IActor, agentPath, sid string, reason interface{}, closed bool) {
+func Kick(iActor cfacade.IActor, agentPath, sid string, reason interface{}, closed bool) {
 	data, err := iActor.App().Serializer().Marshal(reason)
 	if err != nil {
 		clog.Warnf("[Kick] Marshal error. reason = %+v", reason)
@@ -101,7 +101,7 @@ func Kick(iActor face.IActor, agentPath, sid string, reason interface{}, closed 
 	iActor.Call(agentPath, KickFuncName, rsp)
 }
 
-func Broadcast(iActor face.IActor, agentPath string, uidList []int64, allUID bool, route string, v interface{}) {
+func Broadcast(iActor cfacade.IActor, agentPath string, uidList []int64, allUID bool, route string, v interface{}) {
 	if !allUID && len(uidList) < 1 {
 		clog.Warn("[Broadcast] uidList value error.")
 		return

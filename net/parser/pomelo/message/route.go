@@ -2,9 +2,9 @@ package pomeloMessage
 
 import (
 	"strings"
-	cerr "github.com/po2656233/superplace/logger/error"
 
 	cconst "github.com/po2656233/superplace/const"
+	cerr "github.com/po2656233/superplace/logger/error"
 )
 
 // Route struct

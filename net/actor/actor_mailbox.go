@@ -1,11 +1,11 @@
-package actor
+package cherryActor
 
 import (
-	clog "github.com/po2656233/superplace/logger"
 	"time"
 
 	creflect "github.com/po2656233/superplace/extend/reflect"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type mailbox struct {
@@ -22,21 +22,24 @@ func newMailbox(name string) mailbox {
 	}
 }
 
-// Register 第一个为函数指针 第二个指定函数名(可省略)
-func (p *mailbox) Register(fn interface{}) bool {
+func (p *mailbox) Register(funcName string, fn interface{}) {
+	if funcName == "" || len(funcName) < 1 {
+		clog.Errorf("[%s] Func name is empty.", fn)
+		return
+	}
+
 	funcInfo, err := creflect.GetFuncInfo(fn)
 	if err != nil {
-		clog.Errorf("funcName = %s, err = %v", funcInfo.Name, err)
-		return false
+		clog.Errorf("funcName = %s, err = %v", funcName, err)
+		return
 	}
-	funcName := funcInfo.Name
+
 	if _, found := p.funcMap[funcName]; found {
 		clog.Errorf("funcName = %s, already exists.", funcName)
-		return false
+		return
 	}
-	clog.Infof("MailBox Register: [%s] ok", funcName)
+
 	p.funcMap[funcName] = &funcInfo
-	return true
 }
 
 func (p *mailbox) GetFuncInfo(funcName string) (*creflect.FuncInfo, bool) {
@@ -44,13 +47,13 @@ func (p *mailbox) GetFuncInfo(funcName string) (*creflect.FuncInfo, bool) {
 	return funcInfo, found
 }
 
-func (p *mailbox) Pop() *face.Message {
+func (p *mailbox) Pop() *cfacade.Message {
 	v := p.queue.Pop()
 	if v == nil {
 		return nil
 	}
 
-	msg, ok := v.(*face.Message)
+	msg, ok := v.(*cfacade.Message)
 	if !ok {
 		clog.Warnf("Convert to *Message fail. v = %+v", v)
 		return nil
@@ -59,7 +62,7 @@ func (p *mailbox) Pop() *face.Message {
 	return msg
 }
 
-func (p *mailbox) Push(m *face.Message) {
+func (p *mailbox) Push(m *cfacade.Message) {
 	if m != nil {
 		m.PostTime = time.Now().UnixMilli()
 		p.queue.Push(m)

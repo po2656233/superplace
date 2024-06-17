@@ -1,18 +1,15 @@
-package actor
+package cherryActor
 
-import (
-	exReflect "github.com/po2656233/superplace/extend/reflect"
-	face "github.com/po2656233/superplace/facade"
-)
+import cfacade "github.com/po2656233/superplace/facade"
 
 var (
 	Name = "actor_component"
 )
 
 type Component struct {
-	face.Component
+	cfacade.Component
 	*System
-	actorHandlers []face.IActorHandler
+	actorHandlers []cfacade.IActorHandler
 }
 
 func New() *Component {
@@ -22,7 +19,7 @@ func New() *Component {
 }
 
 func (c *Component) Name() string {
-	return exReflect.GetPackName(Component{})
+	return Name
 }
 
 func (c *Component) Init() {
@@ -40,6 +37,6 @@ func (c *Component) OnStop() {
 	c.System.Stop()
 }
 
-func (c *Component) Add(actors ...face.IActorHandler) {
+func (c *Component) Add(actors ...cfacade.IActorHandler) {
 	c.actorHandlers = append(c.actorHandlers, actors...)
 }

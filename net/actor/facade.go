@@ -1,10 +1,10 @@
-package actor
+package cherryActor
 
 import (
 	"time"
 
 	creflect "github.com/po2656233/superplace/extend/reflect"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 )
 
 type (
@@ -15,17 +15,17 @@ type (
 
 type (
 	IEvent interface {
-		Register(fn IEventFunc) bool             // 注册事件
+		Register(name string, fn IEventFunc)     // 注册事件
 		Registers(names []string, fn IEventFunc) // 注册多个事件
 		Unregister(name string)                  // 注销事件
 	}
 
-	IEventFunc func(face.IEventData) // 接收事件数据时的处理函数
+	IEventFunc func(cfacade.IEventData) // 接收事件数据时的处理函数
 )
 
 type (
 	IMailBox interface {
-		Register(fn interface{}) bool // 注册执行函数
+		Register(funcName string, fn interface{}) // 注册执行函数
 		GetFuncInfo(funcName string) (*creflect.FuncInfo, bool)
 	}
 )

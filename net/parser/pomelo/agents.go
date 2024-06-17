@@ -1,17 +1,17 @@
 package pomelo
 
 import (
-	clog "github.com/po2656233/superplace/logger"
-	cerr "github.com/po2656233/superplace/logger/error"
 	"sync"
 
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cerr "github.com/po2656233/superplace/logger/error"
 )
 
 var (
 	lock        = &sync.RWMutex{}
-	sidAgentMap = make(map[face.SID]*Agent)   // sid -> Agent
-	uidMap      = make(map[face.UID]face.SID) // uid -> sid
+	sidAgentMap = make(map[cfacade.SID]*Agent)      // sid -> Agent
+	uidMap      = make(map[cfacade.UID]cfacade.SID) // uid -> sid
 )
 
 func BindSID(agent *Agent) {
@@ -21,7 +21,7 @@ func BindSID(agent *Agent) {
 	sidAgentMap[agent.SID()] = agent
 }
 
-func BindUID(sid face.SID, uid face.UID) error {
+func BindUID(sid cfacade.SID, uid cfacade.UID) error {
 	if sid == "" {
 		return cerr.Errorf("[sid = %s] less than 1.", sid)
 	}
@@ -48,7 +48,7 @@ func BindUID(sid face.SID, uid face.UID) error {
 	return nil
 }
 
-func Unbind(sid face.SID) {
+func Unbind(sid cfacade.SID) {
 	lock.Lock()
 	defer lock.Unlock()
 
@@ -67,7 +67,7 @@ func Unbind(sid face.SID) {
 	}
 }
 
-func GetAgent(sid face.SID) (*Agent, bool) {
+func GetAgent(sid cfacade.SID) (*Agent, bool) {
 	lock.Lock()
 	defer lock.Unlock()
 
@@ -75,7 +75,7 @@ func GetAgent(sid face.SID) (*Agent, bool) {
 	return agent, found
 }
 
-func GetAgentWithUID(uid face.UID) (*Agent, bool) {
+func GetAgentWithUID(uid cfacade.UID) (*Agent, bool) {
 	if uid < 1 {
 		return nil, false
 	}

@@ -1,13 +1,13 @@
-package connector
+package cherryConnector
 
 import (
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 )
 
 type (
 	TCPConnector struct {
-		face.Component
+		cfacade.Component
 		Connector
 		Options
 	}

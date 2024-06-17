@@ -3,9 +3,9 @@ package pomeloMessage
 import (
 	"encoding/binary"
 	"fmt"
-	cerr "github.com/po2656233/superplace/logger/error"
 
 	ccompress "github.com/po2656233/superplace/extend/compress"
+	cerr "github.com/po2656233/superplace/logger/error"
 )
 
 var (

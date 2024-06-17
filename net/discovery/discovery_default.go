@@ -1,35 +1,35 @@
-package discovery
+package cherryDiscovery
 
 import (
-	clog "github.com/po2656233/superplace/logger"
-	cerr "github.com/po2656233/superplace/logger/error"
 	"math/rand"
 	"sync"
 
-	cprofile "github.com/po2656233/superplace/config"
 	cslice "github.com/po2656233/superplace/extend/slice"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cerr "github.com/po2656233/superplace/logger/error"
 	cproto "github.com/po2656233/superplace/net/proto"
+	cprofile "github.com/po2656233/superplace/profile"
 )
 
 // DiscoveryDefault 默认方式，通过读取profile文件的节点信息
 //
 // 该类型发现服务仅用于开发测试使用，直接读取profile.json->node配置
 type DiscoveryDefault struct {
-	memberMap        sync.Map // key:nodeId,value:face.IMember
-	onAddListener    []face.MemberListener
-	onRemoveListener []face.MemberListener
+	memberMap        sync.Map // key:nodeId,value:cfacade.IMember
+	onAddListener    []cfacade.MemberListener
+	onRemoveListener []cfacade.MemberListener
 }
 
 func (n *DiscoveryDefault) PreInit() {
 	n.memberMap = sync.Map{}
 }
 
-func (n *DiscoveryDefault) Load(_ face.IApplication) {
-	// load node info from config file
+func (n *DiscoveryDefault) Load(_ cfacade.IApplication) {
+	// load node info from profile file
 	nodeConfig := cprofile.GetConfig("node")
 	if nodeConfig.LastError() != nil {
-		clog.Error("`node` property not found in config file.")
+		clog.Error("`node` property not found in profile file.")
 		return
 	}
 
@@ -70,11 +70,11 @@ func (n *DiscoveryDefault) Name() string {
 	return "default"
 }
 
-func (n *DiscoveryDefault) Map() map[string]face.IMember {
-	memberMap := map[string]face.IMember{}
+func (n *DiscoveryDefault) Map() map[string]cfacade.IMember {
+	memberMap := map[string]cfacade.IMember{}
 
 	n.memberMap.Range(func(key, value any) bool {
-		if member, ok := value.(face.IMember); ok {
+		if member, ok := value.(cfacade.IMember); ok {
 			memberMap[member.GetNodeId()] = member
 		}
 		return true
@@ -83,11 +83,11 @@ func (n *DiscoveryDefault) Map() map[string]face.IMember {
 	return memberMap
 }
 
-func (n *DiscoveryDefault) ListByType(nodeType string, filterNodeId ...string) []face.IMember {
-	var memberList []face.IMember
+func (n *DiscoveryDefault) ListByType(nodeType string, filterNodeId ...string) []cfacade.IMember {
+	var memberList []cfacade.IMember
 
 	n.memberMap.Range(func(key, value any) bool {
-		member := value.(face.IMember)
+		member := value.(cfacade.IMember)
 		if member.GetNodeType() == nodeType {
 			if _, ok := cslice.StringIn(member.GetNodeId(), filterNodeId); !ok {
 				memberList = append(memberList, member)
@@ -100,7 +100,7 @@ func (n *DiscoveryDefault) ListByType(nodeType string, filterNodeId ...string) [
 	return memberList
 }
 
-func (n *DiscoveryDefault) Random(nodeType string) (face.IMember, bool) {
+func (n *DiscoveryDefault) Random(nodeType string) (cfacade.IMember, bool) {
 	memberList := n.ListByType(nodeType)
 	memberLen := len(memberList)
 
@@ -123,7 +123,7 @@ func (n *DiscoveryDefault) GetType(nodeId string) (nodeType string, err error) {
 	return member.GetNodeType(), nil
 }
 
-func (n *DiscoveryDefault) GetMember(nodeId string) (face.IMember, bool) {
+func (n *DiscoveryDefault) GetMember(nodeId string) (cfacade.IMember, bool) {
 	if nodeId == "" {
 		return nil, false
 	}
@@ -133,10 +133,10 @@ func (n *DiscoveryDefault) GetMember(nodeId string) (face.IMember, bool) {
 		return nil, false
 	}
 
-	return value.(face.IMember), found
+	return value.(cfacade.IMember), found
 }
 
-func (n *DiscoveryDefault) AddMember(member face.IMember) {
+func (n *DiscoveryDefault) AddMember(member cfacade.IMember) {
 	_, loaded := n.memberMap.LoadOrStore(member.GetNodeId(), member)
 	if loaded {
 		clog.Warnf("duplicate nodeId. [nodeType = %s], [nodeId = %s], [address = %s]",
@@ -157,7 +157,7 @@ func (n *DiscoveryDefault) AddMember(member face.IMember) {
 func (n *DiscoveryDefault) RemoveMember(nodeId string) {
 	value, loaded := n.memberMap.LoadAndDelete(nodeId)
 	if loaded {
-		member := value.(face.IMember)
+		member := value.(cfacade.IMember)
 		clog.Debugf("remove member. [member = %s]", member)
 
 		for _, listener := range n.onRemoveListener {
@@ -166,14 +166,14 @@ func (n *DiscoveryDefault) RemoveMember(nodeId string) {
 	}
 }
 
-func (n *DiscoveryDefault) OnAddMember(listener face.MemberListener) {
+func (n *DiscoveryDefault) OnAddMember(listener cfacade.MemberListener) {
 	if listener == nil {
 		return
 	}
 	n.onAddListener = append(n.onAddListener, listener)
 }
 
-func (n *DiscoveryDefault) OnRemoveMember(listener face.MemberListener) {
+func (n *DiscoveryDefault) OnRemoveMember(listener cfacade.MemberListener) {
 	if listener == nil {
 		return
 	}

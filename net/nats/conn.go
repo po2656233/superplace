@@ -1,10 +1,10 @@
-package nats
+package cherryNats
 
 import (
-	clog "github.com/po2656233/superplace/logger"
 	"time"
 
 	"github.com/nats-io/nats.go"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type (
@@ -114,18 +114,11 @@ func (p *options) natsOptions() []nats.Option {
 	}))
 
 	opts = append(opts, nats.ErrorHandler(func(nc *nats.Conn, sub *nats.Subscription, err error) {
-		if sub == nil {
-			clog.Warnf("IsConnect = %v. %s on connection for subscription. but Subscription is nil",
-				nc.IsConnected(),
-				err.Error(),
-			)
-		} else {
-			clog.Warnf("IsConnect = %v. %s on connection for subscription on %q",
-				nc.IsConnected(),
-				err.Error(),
-				sub.Subject,
-			)
-		}
+		clog.Warnf("IsConnect = %v. %s on connection for subscription on %q",
+			nc.IsConnected(),
+			err.Error(),
+			sub.Subject,
+		)
 	}))
 
 	if p.user != "" {

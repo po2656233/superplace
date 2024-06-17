@@ -1,20 +1,20 @@
-package actor
+package cherryActor
 
 import (
-	ccode "github.com/po2656233/superplace/const/code"
-	clog "github.com/po2656233/superplace/logger"
-	cerror "github.com/po2656233/superplace/logger/error"
 	"reflect"
 
 	"google.golang.org/protobuf/proto"
 
+	ccode "github.com/po2656233/superplace/const/code"
 	creflect "github.com/po2656233/superplace/extend/reflect"
 	cutils "github.com/po2656233/superplace/extend/utils"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
+	cerror "github.com/po2656233/superplace/logger/error"
 	cproto "github.com/po2656233/superplace/net/proto"
 )
 
-func InvokeLocalFunc(app face.IApplication, fi *creflect.FuncInfo, m *face.Message) {
+func InvokeLocalFunc(app cfacade.IApplication, fi *creflect.FuncInfo, m *cfacade.Message) {
 	if app == nil {
 		clog.Errorf("[InvokeLocalFunc] app is nil. [message = %+v]", m)
 		return
@@ -28,7 +28,7 @@ func InvokeLocalFunc(app face.IApplication, fi *creflect.FuncInfo, m *face.Messa
 	fi.Value.Call(values)
 }
 
-func InvokeRemoteFunc(app face.IApplication, fi *creflect.FuncInfo, m *face.Message) {
+func InvokeRemoteFunc(app cfacade.IApplication, fi *creflect.FuncInfo, m *cfacade.Message) {
 	if app == nil {
 		clog.Errorf("[InvokeRemoteFunc] app is nil. [message = %+v]", m)
 		return
@@ -85,7 +85,7 @@ func InvokeRemoteFunc(app face.IApplication, fi *creflect.FuncInfo, m *face.Mess
 	}
 }
 
-func EncodeRemoteArgs(app face.IApplication, fi *creflect.FuncInfo, m *face.Message) error {
+func EncodeRemoteArgs(app cfacade.IApplication, fi *creflect.FuncInfo, m *cfacade.Message) error {
 	if m.IsCluster {
 		if fi.InArgsLen == 0 {
 			return nil
@@ -97,11 +97,11 @@ func EncodeRemoteArgs(app face.IApplication, fi *creflect.FuncInfo, m *face.Mess
 	return nil
 }
 
-func EncodeLocalArgs(app face.IApplication, fi *creflect.FuncInfo, m *face.Message) error {
+func EncodeLocalArgs(app cfacade.IApplication, fi *creflect.FuncInfo, m *cfacade.Message) error {
 	return EncodeArgs(app, fi, 1, m)
 }
 
-func EncodeArgs(app face.IApplication, fi *creflect.FuncInfo, index int, m *face.Message) error {
+func EncodeArgs(app cfacade.IApplication, fi *creflect.FuncInfo, index int, m *cfacade.Message) error {
 	argBytes, ok := m.Args.([]byte)
 	if !ok {
 		return cerror.Errorf("Encode args error.[source = %s, target = %s -> %s, funcType = %v]",
@@ -128,7 +128,7 @@ func EncodeArgs(app face.IApplication, fi *creflect.FuncInfo, index int, m *face
 	return nil
 }
 
-func retValue(serializer face.ISerializer, rets []reflect.Value) (int32, []byte) {
+func retValue(serializer cfacade.ISerializer, rets []reflect.Value) (int32, []byte) {
 	var (
 		retsLen = len(rets)
 		rspCode = ccode.OK
@@ -162,7 +162,7 @@ func retValue(serializer face.ISerializer, rets []reflect.Value) (int32, []byte)
 	return rspCode, rspData
 }
 
-func retResponse(reply face.IRespond, rsp *cproto.Response) {
+func retResponse(reply cfacade.IRespond, rsp *cproto.Response) {
 	if reply != nil {
 		rspData, _ := proto.Marshal(rsp)
 		err := reply.Respond(rspData)

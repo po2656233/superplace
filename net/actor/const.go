@@ -1,4 +1,4 @@
-package actor
+package cherryActor
 
 import (
 	cerror "github.com/po2656233/superplace/logger/error"

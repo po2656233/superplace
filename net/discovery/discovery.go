@@ -1,12 +1,12 @@
-package discovery
+package cherryDiscovery
 
 import (
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 )
 
 var (
-	discoveryMap = make(map[string]face.IDiscovery)
+	discoveryMap = make(map[string]cfacade.IDiscovery)
 )
 
 func init() {
@@ -15,7 +15,7 @@ func init() {
 	//RegisterDiscovery(&DiscoveryETCD{})
 }
 
-func Register(discovery face.IDiscovery) {
+func Register(discovery cfacade.IDiscovery) {
 	if discovery == nil {
 		clog.Fatal("Discovery instance is nil")
 		return

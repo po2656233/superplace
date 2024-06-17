@@ -35,7 +35,7 @@ const (
 	RouteCompressMask = 0x01 // 启用路由压缩 00000001
 	MsgHeadLength     = 0x02 // 消息头的长度 00000010
 	TypeMask          = 0x07 // 获取消息类型 00000111
-	GZIPMask          = 0x10 // base compressed gzip mark
+	GZIPMask          = 0x10 // data compressed gzip mark
 	ErrorMask         = 0x20 // 响应错误标识 00100000
 )
 

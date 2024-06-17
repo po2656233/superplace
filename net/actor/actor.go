@@ -1,12 +1,12 @@
-package actor
+package cherryActor
 
 import (
-	clog "github.com/po2656233/superplace/logger"
 	"strings"
 	"time"
 
 	cutils "github.com/po2656233/superplace/extend/utils"
 	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	"go.uber.org/zap/zapcore"
 )
 
@@ -393,7 +393,7 @@ func newActor(actorID, childID string, handler cfacade.IActorHandler, c *System)
 	thisActor.timer = &timer
 
 	// register update timer func
-	thisActor.remoteMail.Register(thisActor.timer._updateTimer_)
+	thisActor.remoteMail.Register(updateTimerFuncName, thisActor.timer._updateTimer_)
 
 	// spawn load!
 	actorLoad, ok := handler.(IActorLoader)

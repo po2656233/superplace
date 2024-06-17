@@ -17,7 +17,7 @@
 ### 示例代码
 ```go
 // 构建简单的网络数据包解析器
-func buildSimpleParser(app *extend.AppBuilder) face.INetParser {
+func buildSimpleParser(app *cherry.AppBuilder) cfacade.INetParser {
     agentActor := simple.NewActor("user")
     agentActor.AddConnector(cconnector.NewTCP(":10011"))
     agentActor.AddConnector(cconnector.NewWS(app.Address()))

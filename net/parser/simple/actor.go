@@ -2,12 +2,12 @@ package simple
 
 import (
 	"encoding/binary"
-	clog "github.com/po2656233/superplace/logger"
 	"net"
 	"time"
 
 	"github.com/nats-io/nuid"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
 	cproto "github.com/po2656233/superplace/net/proto"
 	"go.uber.org/zap/zapcore"
@@ -17,7 +17,7 @@ type (
 	actor struct {
 		cactor.Base
 		agentActorID   string
-		connectors     []face.IConnector
+		connectors     []cfacade.IConnector
 		onNewAgentFunc OnNewAgentFunc
 	}
 
@@ -31,7 +31,7 @@ func NewActor(agentActorID string) *actor {
 
 	parser := &actor{
 		agentActorID: agentActorID,
-		connectors:   make([]face.IConnector, 0),
+		connectors:   make([]cfacade.IConnector, 0),
 	}
 
 	return parser
@@ -39,10 +39,10 @@ func NewActor(agentActorID string) *actor {
 
 // OnInit Actor初始化前触发该函数
 func (p *actor) OnInit() {
-	p.Remote().Register(p.response)
+	p.Remote().Register(ResponseFuncName, p.response)
 }
 
-func (p *actor) Load(app face.IApplication) {
+func (p *actor) Load(app cfacade.IApplication) {
 	if len(p.connectors) < 1 {
 		panic("Connectors is nil. Please call the AddConnector(...) method add IConnector.")
 	}
@@ -58,11 +58,11 @@ func (p *actor) Load(app face.IApplication) {
 	}
 }
 
-func (p *actor) AddConnector(connector face.IConnector) {
+func (p *actor) AddConnector(connector cfacade.IConnector) {
 	p.connectors = append(p.connectors, connector)
 }
 
-func (p *actor) Connectors() []face.IConnector {
+func (p *actor) Connectors() []cfacade.IConnector {
 	return p.connectors
 }
 

@@ -1,13 +1,13 @@
 package pomelo
 
 import (
-	ccode "github.com/po2656233/superplace/const/code"
-	clog "github.com/po2656233/superplace/logger"
 	"net"
 	"time"
 
 	"github.com/nats-io/nuid"
-	face "github.com/po2656233/superplace/facade"
+	ccode "github.com/po2656233/superplace/const/code"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
 	pomeloMessage "github.com/po2656233/superplace/net/parser/pomelo/message"
 	ppacket "github.com/po2656233/superplace/net/parser/pomelo/packet"
@@ -19,7 +19,7 @@ type (
 	actor struct {
 		cactor.Base
 		agentActorID   string
-		connectors     []face.IConnector
+		connectors     []cfacade.IConnector
 		onNewAgentFunc OnNewAgentFunc
 		onInitFunc     func()
 	}
@@ -34,7 +34,7 @@ func NewActor(agentActorID string) *actor {
 
 	parser := &actor{
 		agentActorID: agentActorID,
-		connectors:   make([]face.IConnector, 0),
+		connectors:   make([]cfacade.IConnector, 0),
 		onInitFunc:   nil,
 	}
 
@@ -43,10 +43,10 @@ func NewActor(agentActorID string) *actor {
 
 // OnInit Actor初始化前触发该函数
 func (p *actor) OnInit() {
-	p.Remote().Register(p.response)
-	p.Remote().Register(p.push)
-	p.Remote().Register(p.kick)
-	p.Remote().Register(p.broadcast)
+	p.Remote().Register(ResponseFuncName, p.response)
+	p.Remote().Register(PushFuncName, p.push)
+	p.Remote().Register(KickFuncName, p.kick)
+	p.Remote().Register(BroadcastName, p.broadcast)
 
 	if p.onInitFunc != nil {
 		p.onInitFunc()
@@ -57,7 +57,7 @@ func (p *actor) SetOnInitFunc(fn func()) {
 	p.onInitFunc = fn
 }
 
-func (p *actor) Load(app face.IApplication) {
+func (p *actor) Load(app cfacade.IApplication) {
 	if len(p.connectors) < 1 {
 		panic("connectors is nil. Please call the AddConnector(...) method add IConnector.")
 	}
@@ -75,11 +75,11 @@ func (p *actor) Load(app face.IApplication) {
 	}
 }
 
-func (p *actor) AddConnector(connector face.IConnector) {
+func (p *actor) AddConnector(connector cfacade.IConnector) {
 	p.connectors = append(p.connectors, connector)
 }
 
-func (p *actor) Connectors() []face.IConnector {
+func (p *actor) Connectors() []cfacade.IConnector {
 	return p.connectors
 }
 

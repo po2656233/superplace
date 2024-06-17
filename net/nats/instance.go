@@ -1,9 +1,9 @@
-package nats
+package cherryNats
 
 import (
 	"time"
 
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 )
 
 var (
@@ -16,7 +16,7 @@ func SetInstance(conn *Conn) {
 	instance = conn
 }
 
-func NewFromConfig(config face.ProfileJSON) *Conn {
+func NewFromConfig(config cfacade.ProfileJSON) *Conn {
 	conn := New()
 	conn.address = config.GetString("address")
 	conn.maxReconnects = config.GetInt("max_reconnects")

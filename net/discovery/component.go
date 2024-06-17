@@ -1,35 +1,38 @@
-package discovery
+package cherryDiscovery
 
 import (
-	cprofile "github.com/po2656233/superplace/config"
-	exReflect "github.com/po2656233/superplace/extend/reflect"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
+	cprofile "github.com/po2656233/superplace/profile"
+)
+
+const (
+	Name = "discovery_component"
 )
 
 type Component struct {
-	face.Component
-	face.IDiscovery
+	cfacade.Component
+	cfacade.IDiscovery
 }
 
 func New() *Component {
 	return &Component{}
 }
 
-func (p *Component) Name() string {
-	return exReflect.GetPackName(Component{})
+func (*Component) Name() string {
+	return Name
 }
 
 func (p *Component) Init() {
 	config := cprofile.GetConfig("cluster").GetConfig("discovery")
 	if config.LastError() != nil {
-		clog.Error("`cluster` property not found in config file.")
+		clog.Error("`cluster` property not found in profile file.")
 		return
 	}
 
 	mode := config.GetString("mode")
 	if mode == "" {
-		clog.Error("`discovery->mode` property not found in config file.")
+		clog.Error("`discovery->mode` property not found in profile file.")
 		return
 	}
 

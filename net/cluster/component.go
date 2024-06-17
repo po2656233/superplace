@@ -1,14 +1,17 @@
-package cluster
+package cherryCluster
 
 import (
-	exReflect "github.com/po2656233/superplace/extend/reflect"
-	face "github.com/po2656233/superplace/facade"
-	superNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
+	cfacade "github.com/po2656233/superplace/facade"
+	cherryNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
+)
+
+const (
+	Name = "cluster_component"
 )
 
 type Component struct {
-	face.Component
-	face.ICluster
+	cfacade.Component
+	cfacade.ICluster
 }
 
 func New() *Component {
@@ -16,7 +19,7 @@ func New() *Component {
 }
 
 func (c *Component) Name() string {
-	return exReflect.GetPackName(Component{})
+	return Name
 }
 
 func (c *Component) Init() {
@@ -28,6 +31,6 @@ func (c *Component) OnStop() {
 	c.ICluster.Stop()
 }
 
-func (c *Component) loadCluster() face.ICluster {
-	return superNatsCluster.New(c.App())
+func (c *Component) loadCluster() cfacade.ICluster {
+	return cherryNatsCluster.New(c.App())
 }

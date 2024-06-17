@@ -1,10 +1,11 @@
-package connector
+package cherryConnector
 
 import (
-	clog "github.com/po2656233/superplace/logger"
 	"net"
 	"sync"
 	"testing"
+
+	clog "github.com/po2656233/superplace/logger"
 )
 
 func TestNewTCPConnector(t *testing.T) {

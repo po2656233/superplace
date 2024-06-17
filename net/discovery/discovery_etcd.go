@@ -1,3 +1,3 @@
-package discovery
+package cherryDiscovery
 
-// file from https://superplace/tree/master/components/etcd
+// file from https://github.com/cherry-game/cherry/tree/master/components/etcd

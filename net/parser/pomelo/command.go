@@ -1,11 +1,11 @@
 package pomelo
 
 import (
-	clog "github.com/po2656233/superplace/logger"
 	"time"
 
 	jsoniter "github.com/json-iterator/go"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	pmessage "github.com/po2656233/superplace/net/parser/pomelo/message"
 	ppacket "github.com/po2656233/superplace/net/parser/pomelo/packet"
 	"go.uber.org/zap/zapcore"
@@ -44,7 +44,7 @@ var (
 	}
 )
 
-func (p *Command) init(app face.IApplication) {
+func (p *Command) init(app cfacade.IApplication) {
 	p.setData(DataHeartbeat, p.heartbeatTime.Seconds())
 	p.setData(DataDict, pmessage.GetDictionary())
 	p.setData(DataSerializer, app.Serializer().Name())
@@ -80,7 +80,7 @@ func (p *Command) setHandshakeBytes() {
 		return
 	}
 
-	clog.Infof("[initCommand] handshake base = %v", handshakeData)
+	clog.Infof("[initCommand] handshake data = %v", handshakeData)
 }
 
 func (p *Command) setHeartbeatBytes() {
@@ -153,7 +153,7 @@ func dataCommand(agent *Agent, pkg *ppacket.Packet) {
 	msg, err := pmessage.Decode(pkg.Data())
 	if err != nil {
 		if clog.PrintLevel(zapcore.DebugLevel) {
-			clog.Warnf("[sid = %s,uid = %d] Data message decode error. [base = %s, error = %s]",
+			clog.Warnf("[sid = %s,uid = %d] Data message decode error. [data = %s, error = %s]",
 				agent.SID(),
 				agent.UID(),
 				pkg.Data(),
@@ -166,7 +166,7 @@ func dataCommand(agent *Agent, pkg *ppacket.Packet) {
 	route, err := pmessage.DecodeRoute(msg.Route)
 	if err != nil {
 		if clog.PrintLevel(zapcore.DebugLevel) {
-			clog.Warnf("[sid = %s,uid = %d] Data Message decode route error. [base = %s, error = %s]",
+			clog.Warnf("[sid = %s,uid = %d] Data Message decode route error. [data = %s, error = %s]",
 				agent.SID(),
 				agent.UID(),
 				pkg.Data(),

@@ -1,25 +1,25 @@
-package connector
+package cherryConnector
 
 import (
-	clog "github.com/po2656233/superplace/logger"
 	"io"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type (
 	WSConnector struct {
-		face.Component
+		cfacade.Component
 		Connector
 		Options
 		upgrade *websocket.Upgrader
 	}
 
 	// WSConn is an adapter to t.INetConn, which implements all INetConn
-	// facade base on *websocket.INetConn
+	// interface base on *websocket.INetConn
 	WSConn struct {
 		*websocket.Conn
 		typ    int // message type

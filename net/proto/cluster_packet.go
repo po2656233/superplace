@@ -1,4 +1,4 @@
-package superProto
+package supperProto
 
 import (
 	"fmt"

@@ -1,11 +1,11 @@
-package serializer
+package cherrySerializer
 
 import (
 	cerr "github.com/po2656233/superplace/logger/error"
 	"google.golang.org/protobuf/proto"
 )
 
-// Protobuf implements the serialize.Protobuf facade
+// Protobuf implements the serialize.Protobuf interface
 type Protobuf struct{}
 
 // NewProtobuf NewSerializer returns a new Protobuf.
@@ -26,7 +26,7 @@ func (p *Protobuf) Marshal(v interface{}) ([]byte, error) {
 	return proto.Marshal(pb)
 }
 
-// Unmarshal parses the protobuf-encoded base and stores the result
+// Unmarshal parses the protobuf-encoded data and stores the result
 // in the value pointed to by v.
 func (p *Protobuf) Unmarshal(data []byte, v interface{}) error {
 	pb, ok := v.(proto.Message)

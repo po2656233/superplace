@@ -2,8 +2,6 @@ package pomeloClient
 
 import (
 	"crypto/tls"
-	clog "github.com/po2656233/superplace/logger"
-	cerr "github.com/po2656233/superplace/logger/error"
 	"net"
 	"net/url"
 	"runtime/debug"
@@ -14,6 +12,8 @@ import (
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 	ccompress "github.com/po2656233/superplace/extend/compress"
+	clog "github.com/po2656233/superplace/logger"
+	cerr "github.com/po2656233/superplace/logger/error"
 	cconnector "github.com/po2656233/superplace/net/connector"
 	pomeloMessage "github.com/po2656233/superplace/net/parser/pomelo/message"
 	pomeloPacket "github.com/po2656233/superplace/net/parser/pomelo/packet"
@@ -33,7 +33,7 @@ type (
 		nextID        uint32         // 消息自增id
 		closeChan     chan struct{}  // 关闭chan
 		actionChan    chan ActionFn  // 动作执行队列
-		handshakeData *HandshakeData // handshake base
+		handshakeData *HandshakeData // handshake data
 		chWrite       chan []byte
 	}
 

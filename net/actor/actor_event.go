@@ -1,8 +1,7 @@
-package actor
+package cherryActor
 
 import (
-	superReflect "github.com/po2656233/superplace/extend/reflect"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 )
 
@@ -23,24 +22,15 @@ func newEvent(thisActor *Actor) actorEvent {
 // Register 注册事件
 // name 事件名
 // fn 接收事件处理的函数
-func (p *actorEvent) Register(fn IEventFunc) bool {
-	name := superReflect.GetFuncName(fn)
-	if name == "" {
-		clog.Warnf("Convert to IEventData fail.")
-		return false
-	}
-	clog.Infof("EVENT Register: [%v]  ok", name)
+func (p *actorEvent) Register(name string, fn IEventFunc) {
 	funcList := p.funcMap[name]
 	funcList = append(funcList, fn)
 	p.funcMap[name] = funcList
-	return true
 }
 
 func (p *actorEvent) Registers(names []string, fn IEventFunc) {
 	for _, name := range names {
-		funcList := p.funcMap[name]
-		funcList = append(funcList, fn)
-		p.funcMap[name] = funcList
+		p.Register(name, fn)
 	}
 }
 
@@ -50,7 +40,7 @@ func (p *actorEvent) Unregister(name string) {
 	delete(p.funcMap, name)
 }
 
-func (p *actorEvent) Push(data face.IEventData) {
+func (p *actorEvent) Push(data cfacade.IEventData) {
 	if _, found := p.funcMap[data.Name()]; found {
 		p.queue.Push(data)
 	}
@@ -59,20 +49,20 @@ func (p *actorEvent) Push(data face.IEventData) {
 		return
 	}
 
-	p.thisActor.Child().Each(func(iActor face.IActor) {
+	p.thisActor.Child().Each(func(iActor cfacade.IActor) {
 		if childActor, ok := iActor.(*Actor); ok {
 			childActor.event.Push(data)
 		}
 	})
 }
 
-func (p *actorEvent) Pop() face.IEventData {
+func (p *actorEvent) Pop() cfacade.IEventData {
 	v := p.queue.Pop()
 	if v == nil {
 		return nil
 	}
 
-	eventData, ok := v.(face.IEventData)
+	eventData, ok := v.(cfacade.IEventData)
 	if !ok {
 		clog.Warnf("Convert to IEventData fail. v = %+v", v)
 		return nil
@@ -81,10 +71,10 @@ func (p *actorEvent) Pop() face.IEventData {
 	return eventData
 }
 
-func (p *actorEvent) funcInvoke(data face.IEventData) {
+func (p *actorEvent) funcInvoke(data cfacade.IEventData) {
 	funcList, found := p.funcMap[data.Name()]
 	if !found {
-		clog.Warnf("[%s] Event not found. [base = %+v]",
+		clog.Warnf("[%s] Event not found. [data = %+v]",
 			p.thisActor.Path(),
 			data,
 		)
@@ -93,7 +83,7 @@ func (p *actorEvent) funcInvoke(data face.IEventData) {
 
 	defer func() {
 		if rev := recover(); rev != nil {
-			clog.Errorf("[%s] Event invoke error. [base = %+v]",
+			clog.Errorf("[%s] Event invoke error. [data = %+v]",
 				p.thisActor.Path(),
 				data,
 			)

@@ -1,4 +1,4 @@
-package actor
+package cherryActor
 
 import (
 	"sync/atomic"

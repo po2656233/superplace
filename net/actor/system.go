@@ -1,14 +1,15 @@
-package actor
+package cherryActor
 
 import (
+	"strings"
+	"sync"
+	"time"
+
 	ccode "github.com/po2656233/superplace/const/code"
 	cutils "github.com/po2656233/superplace/extend/utils"
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cproto "github.com/po2656233/superplace/net/proto"
-	"strings"
-	"sync"
-	"time"
 )
 
 type (
@@ -184,7 +185,7 @@ func (p *System) Call(source, target, funcName string, arg interface{}) int32 {
 		remoteMsg.Target = target
 		remoteMsg.FuncName = funcName
 		remoteMsg.Args = arg
-		remoteMsg.ChanResult = make(chan interface{})
+
 		if !p.PostRemote(&remoteMsg) {
 			clog.Warnf("[Call] Post remote fail. [source = %s, target = %s, funcName = %s]", source, target, funcName)
 			return ccode.ActorCallFail

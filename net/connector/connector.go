@@ -1,17 +1,17 @@
-package connector
+package cherryConnector
 
 import (
 	"crypto/tls"
-	clog "github.com/po2656233/superplace/logger"
 	"net"
 
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 )
 
 type (
 	Connector struct {
 		listener      net.Listener
-		onConnectFunc face.OnConnectFunc
+		onConnectFunc cfacade.OnConnectFunc
 		connChan      chan net.Conn
 		running       bool
 	}
@@ -25,7 +25,7 @@ func NewConnector(size int) Connector {
 	return connector
 }
 
-func (p *Connector) OnConnect(fn face.OnConnectFunc) {
+func (p *Connector) OnConnect(fn cfacade.OnConnectFunc) {
 	if fn != nil {
 		p.onConnectFunc = fn
 	}

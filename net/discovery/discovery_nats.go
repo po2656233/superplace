@@ -1,30 +1,30 @@
-package discovery
+package cherryDiscovery
 
 import (
 	"fmt"
-	clog "github.com/po2656233/superplace/logger"
 	"time"
 
 	"github.com/nats-io/nats.go"
-	cprofile "github.com/po2656233/superplace/config"
-	face "github.com/po2656233/superplace/facade"
+	cfacade "github.com/po2656233/superplace/facade"
+	clog "github.com/po2656233/superplace/logger"
 	cnats "github.com/po2656233/superplace/net/nats"
 	cproto "github.com/po2656233/superplace/net/proto"
+	cprofile "github.com/po2656233/superplace/profile"
 )
 
 // DiscoveryNATS master节点模式(master为单节点)
 // 先启动一个master节点
-// 其他节点启动时Request(extend.discovery.register)，到master节点注册
-// master节点subscribe(extend.discovery.register)，返回已注册节点列表
-// master节点publish(extend.discovery.addMember)，当前已注册的节点到
-// 所有客户端节点subscribe(extend.discovery.addMember)，接收新节点
-// 所有节点subscribe(extend.discovery.unregister)，退出时注销节点
+// 其他节点启动时Request(cherry.discovery.register)，到master节点注册
+// master节点subscribe(cherry.discovery.register)，返回已注册节点列表
+// master节点publish(cherry.discovery.addMember)，当前已注册的节点到
+// 所有客户端节点subscribe(cherry.discovery.addMember)，接收新节点
+// 所有节点subscribe(cherry.discovery.unregister)，退出时注销节点
 type DiscoveryNATS struct {
 	DiscoveryDefault
-	app               face.IApplication
-	thisMember        face.IMember
+	app               cfacade.IApplication
+	thisMember        cfacade.IMember
 	thisMemberBytes   []byte
-	masterMember      face.IMember
+	masterMember      cfacade.IMember
 	registerSubject   string
 	unregisterSubject string
 	addSubject        string
@@ -47,7 +47,7 @@ func (m *DiscoveryNATS) buildSubject(subject string) string {
 	return fmt.Sprintf(subject, m.masterMember.GetNodeId())
 }
 
-func (m *DiscoveryNATS) Load(app face.IApplication) {
+func (m *DiscoveryNATS) Load(app cfacade.IApplication) {
 	m.DiscoveryDefault.PreInit()
 	m.app = app
 	m.loadMember()
@@ -97,10 +97,10 @@ func (m *DiscoveryNATS) loadMember() {
 }
 
 func (m *DiscoveryNATS) init() {
-	m.registerSubject = m.buildSubject("extend.discovery.%s.register")
-	m.unregisterSubject = m.buildSubject("extend.discovery.%s.unregister")
-	m.addSubject = m.buildSubject("extend.discovery.%s.addMember")
-	m.checkSubject = m.buildSubject("extend.discovery.%s.check")
+	m.registerSubject = m.buildSubject("cherry.discovery.%s.register")
+	m.unregisterSubject = m.buildSubject("cherry.discovery.%s.unregister")
+	m.addSubject = m.buildSubject("cherry.discovery.%s.addMember")
+	m.checkSubject = m.buildSubject("cherry.discovery.%s.check")
 
 	m.subscribe(m.unregisterSubject, func(msg *nats.Msg) {
 		unregisterMember := &cproto.Member{}

@@ -5,13 +5,14 @@ import (
 	"encoding/binary"
 	"io"
 	"net"
+
 	cerr "github.com/po2656233/superplace/logger/error"
 )
 
 var (
 	NoneMessage        = Message{} // none message
 	headLength         = 8         // ID uint32(4 bytes) +  DataLen uint32(4 bytes)
-	dataLength  uint32 = 4096      // base length
+	dataLength  uint32 = 4096      // data length
 )
 
 type Message struct {
@@ -26,7 +27,7 @@ func ReadMessage(conn net.Conn) (Message, bool, error) {
 		return NoneMessage, true, err
 	}
 
-	// if the header has no base, we can consider it as a closed connection
+	// if the header has no data, we can consider it as a closed connection
 	if len(header) == 0 {
 		return NoneMessage, true, cerr.PacketConnectClosed
 	}

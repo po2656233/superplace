@@ -3,9 +3,10 @@ package pomeloPacket
 import (
 	"bytes"
 	"fmt"
-	cerr "github.com/po2656233/superplace/logger/error"
 	"io"
 	"net"
+
+	cerr "github.com/po2656233/superplace/logger/error"
 )
 
 type (
@@ -34,7 +35,7 @@ func (p *Packet) SetData(data []byte) {
 
 // String represents the Packet's in text mode.
 func (p *Packet) String() string {
-	return fmt.Sprintf("packet type: %s, length: %d, base: %s", TypeName(p.typ), p.len, string(p.data))
+	return fmt.Sprintf("packet type: %s, length: %d, data: %s", TypeName(p.typ), p.len, string(p.data))
 }
 
 func Decode(data []byte) ([]*Packet, error) {
@@ -80,9 +81,9 @@ func Decode(data []byte) ([]*Packet, error) {
 // Encode create a packet.Packet from  the raw bytes slice and then encode to network bytes slice
 // Protocol refs: https://github.com/NetEase/pomelo/wiki/Communication-Protocol
 //
-// -<type>-|--------<length>--------|-<base>-
+// -<type>-|--------<length>--------|-<data>-
 // --------|------------------------|--------
-// 1 byte packet type, 3 bytes packet base length(big end), and base segment
+// 1 byte packet type, 3 bytes packet data length(big end), and data segment
 func Encode(typ byte, data []byte) ([]byte, error) {
 	if typ < Handshake || typ > Kick {
 		return nil, cerr.PacketWrongType
@@ -118,7 +119,7 @@ func Read(conn net.Conn) ([]*Packet, bool, error) {
 		return nil, true, err
 	}
 
-	// if the header has no base, we can consider it as a closed connection
+	// if the header has no data, we can consider it as a closed connection
 	if len(header) == 0 {
 		return nil, true, cerr.PacketConnectClosed
 	}

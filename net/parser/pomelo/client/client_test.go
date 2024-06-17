@@ -11,11 +11,11 @@ func TestClient(t *testing.T) {
 		WithRequestTimeout(1 * time.Second),
 	)
 	client.TagName = "dog egg"
-	client.ConnectToWS("127.0.0.1:10010", "")
+	client.ConnectToWS("172.16.124.137:21000", "")
 
 	defer client.Disconnect()
 
-	time.Sleep(30 * time.Second)
+	time.Sleep(1 * time.Hour)
 
 }
 
