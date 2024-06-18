@@ -4,7 +4,7 @@
 // 	protoc        v3.7.0
 // source: proto.proto
 
-package supperProto
+package superProto
 
 import (
 	//proto "google.golang.org/protobuf/proto"

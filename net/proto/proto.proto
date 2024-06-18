@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/cherry-game/cherry/net/proto/proto;cherryProto";
 
-package cherryProto;
+package superProto;
 
 message I32 {
   int32  value = 1;

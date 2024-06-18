@@ -1,4 +1,4 @@
-package supperProto
+package superProto
 
 import (
 	cconst "github.com/po2656233/superplace/const"
