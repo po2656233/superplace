@@ -39,7 +39,7 @@ func NewActor(agentActorID string) *actor {
 
 // OnInit Actor初始化前触发该函数
 func (p *actor) OnInit() {
-	p.Remote().Register(ResponseFuncName, p.response)
+	p.Remote().Register(p.response)
 }
 
 func (p *actor) Load(app cfacade.IApplication) {
