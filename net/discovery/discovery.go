@@ -1,4 +1,4 @@
-package cherryDiscovery
+package superDiscovery
 
 import (
 	cfacade "github.com/po2656233/superplace/facade"

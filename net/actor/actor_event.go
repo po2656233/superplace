@@ -1,4 +1,4 @@
-package cherryActor
+package superActor
 
 import (
 	superReflect "github.com/po2656233/superplace/extend/reflect"

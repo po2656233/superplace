@@ -1,9 +1,9 @@
-package cherryActor
+package superActor
 
 import (
 	"time"
 
-	cherryTimeWheel "github.com/po2656233/superplace/extend/time_wheel"
+	superTimeWheel "github.com/po2656233/superplace/extend/time_wheel"
 	cutils "github.com/po2656233/superplace/extend/utils"
 	clog "github.com/po2656233/superplace/logger"
 )
@@ -19,7 +19,7 @@ type (
 	}
 
 	timerInfo struct {
-		timer *cherryTimeWheel.Timer
+		timer *superTimeWheel.Timer
 		fn    func()
 		once  bool
 	}
@@ -76,7 +76,7 @@ func (p *actorTimer) AddOnce(delay time.Duration, fn func(), async ...bool) uint
 }
 
 func (p *actorTimer) AddFixedHour(hour, minute, second int, fn func(), async ...bool) uint64 {
-	schedule := &cherryTimeWheel.FixedDateSchedule{
+	schedule := &superTimeWheel.FixedDateSchedule{
 		Hour:   hour,
 		Minute: minute,
 		Second: second,
@@ -116,7 +116,7 @@ func (p *actorTimer) RemoveAll() {
 	}
 }
 
-func (p *actorTimer) addTimerInfo(timer *cherryTimeWheel.Timer, fn func(), once bool) {
+func (p *actorTimer) addTimerInfo(timer *superTimeWheel.Timer, fn func(), once bool) {
 	p.timerInfoMap[timer.ID()] = &timerInfo{
 		timer: timer,
 		fn:    fn,

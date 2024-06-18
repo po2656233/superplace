@@ -1,4 +1,4 @@
-package cherryConnector
+package superConnector
 
 import (
 	clog "github.com/po2656233/superplace/logger"

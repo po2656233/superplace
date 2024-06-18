@@ -1,4 +1,4 @@
-package cherryNatsCluster
+package superNatsCluster
 
 import (
 	"time"
@@ -6,13 +6,13 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/nats-io/nats.go"
+	cprofile "github.com/po2656233/superplace/config"
 	ccode "github.com/po2656233/superplace/const/code"
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cerr "github.com/po2656233/superplace/logger/error"
 	cnats "github.com/po2656233/superplace/net/nats"
 	cproto "github.com/po2656233/superplace/net/proto"
-	cprofile "github.com/po2656233/superplace/profile"
 	"go.uber.org/zap/zapcore"
 )
 

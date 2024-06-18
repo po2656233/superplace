@@ -1,4 +1,4 @@
-package cherryNats
+package superNats
 
 import (
 	"time"

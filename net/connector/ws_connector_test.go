@@ -1,4 +1,4 @@
-package cherryConnector
+package superConnector
 
 import (
 	"fmt"

@@ -1,4 +1,4 @@
-package cherrySerializer
+package superSerializer
 
 import (
 	cerr "github.com/po2656233/superplace/logger/error"

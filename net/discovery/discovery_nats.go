@@ -1,24 +1,24 @@
-package cherryDiscovery
+package superDiscovery
 
 import (
 	"fmt"
 	"time"
 
 	"github.com/nats-io/nats.go"
+	cprofile "github.com/po2656233/superplace/config"
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cnats "github.com/po2656233/superplace/net/nats"
 	cproto "github.com/po2656233/superplace/net/proto"
-	cprofile "github.com/po2656233/superplace/profile"
 )
 
 // DiscoveryNATS master节点模式(master为单节点)
 // 先启动一个master节点
-// 其他节点启动时Request(cherry.discovery.register)，到master节点注册
-// master节点subscribe(cherry.discovery.register)，返回已注册节点列表
-// master节点publish(cherry.discovery.addMember)，当前已注册的节点到
-// 所有客户端节点subscribe(cherry.discovery.addMember)，接收新节点
-// 所有节点subscribe(cherry.discovery.unregister)，退出时注销节点
+// 其他节点启动时Request(super.discovery.register)，到master节点注册
+// master节点subscribe(super.discovery.register)，返回已注册节点列表
+// master节点publish(super.discovery.addMember)，当前已注册的节点到
+// 所有客户端节点subscribe(super.discovery.addMember)，接收新节点
+// 所有节点subscribe(super.discovery.unregister)，退出时注销节点
 type DiscoveryNATS struct {
 	DiscoveryDefault
 	app               cfacade.IApplication
@@ -97,10 +97,10 @@ func (m *DiscoveryNATS) loadMember() {
 }
 
 func (m *DiscoveryNATS) init() {
-	m.registerSubject = m.buildSubject("cherry.discovery.%s.register")
-	m.unregisterSubject = m.buildSubject("cherry.discovery.%s.unregister")
-	m.addSubject = m.buildSubject("cherry.discovery.%s.addMember")
-	m.checkSubject = m.buildSubject("cherry.discovery.%s.check")
+	m.registerSubject = m.buildSubject("super.discovery.%s.register")
+	m.unregisterSubject = m.buildSubject("super.discovery.%s.unregister")
+	m.addSubject = m.buildSubject("super.discovery.%s.addMember")
+	m.checkSubject = m.buildSubject("super.discovery.%s.check")
 
 	m.subscribe(m.unregisterSubject, func(msg *nats.Msg) {
 		unregisterMember := &cproto.Member{}

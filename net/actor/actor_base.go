@@ -1,4 +1,4 @@
-package cherryActor
+package superActor
 
 import (
 	cfacade "github.com/po2656233/superplace/facade"

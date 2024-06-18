@@ -1,12 +1,12 @@
-package cherryNatsCluster
+package superNatsCluster
 
 import (
 	"fmt"
 )
 
 const (
-	remoteSubjectFormat = "cherry.%s.remote.%s.%s" // nodeType.nodeId
-	localSubjectFormat  = "cherry.%s.local.%s.%s"  // nodeType.nodeId
+	remoteSubjectFormat = "extend.%s.remote.%s.%s" // nodeType.nodeId
+	localSubjectFormat  = "extend.%s.local.%s.%s"  // nodeType.nodeId
 )
 
 // getLocalSubject local message nats chan

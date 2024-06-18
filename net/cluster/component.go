@@ -1,8 +1,8 @@
-package cherryCluster
+package superCluster
 
 import (
 	cfacade "github.com/po2656233/superplace/facade"
-	cherryNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
+	superNatsCluster "github.com/po2656233/superplace/net/cluster/nats_cluster"
 )
 
 const (
@@ -32,5 +32,5 @@ func (c *Component) OnStop() {
 }
 
 func (c *Component) loadCluster() cfacade.ICluster {
-	return cherryNatsCluster.New(c.App())
+	return superNatsCluster.New(c.App())
 }
