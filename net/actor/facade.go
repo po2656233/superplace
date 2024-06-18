@@ -15,7 +15,7 @@ type (
 
 type (
 	IEvent interface {
-		Register(name string, fn IEventFunc)     // 注册事件
+		Register(fn IEventFunc) bool             // 注册事件
 		Registers(names []string, fn IEventFunc) // 注册多个事件
 		Unregister(name string)                  // 注销事件
 	}
@@ -25,7 +25,7 @@ type (
 
 type (
 	IMailBox interface {
-		Register(funcName string, fn interface{}) // 注册执行函数
+		Register(fn interface{}) bool // 注册执行函数
 		GetFuncInfo(funcName string) (*creflect.FuncInfo, bool)
 	}
 )
