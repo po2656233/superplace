@@ -34,7 +34,7 @@ func (p *mailbox) Register(fn interface{}) bool {
 		clog.Errorf("funcName = %s, already exists.", funcName)
 		return false
 	}
-	clog.Infof("MailBox Register: [%s] ok", funcName)
+	clog.Infof("MailBox(%v) Register: [%s] ok", p.name, funcName)
 	p.funcMap[funcName] = &funcInfo
 	return true
 }
