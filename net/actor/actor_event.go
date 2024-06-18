@@ -1,6 +1,7 @@
 package cherryActor
 
 import (
+	superReflect "github.com/po2656233/superplace/extend/reflect"
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 )
@@ -22,15 +23,24 @@ func newEvent(thisActor *Actor) actorEvent {
 // Register 注册事件
 // name 事件名
 // fn 接收事件处理的函数
-func (p *actorEvent) Register(name string, fn IEventFunc) {
+func (p *actorEvent) Register(fn IEventFunc) bool {
+	name := superReflect.GetFuncName(fn)
+	if name == "" {
+		clog.Warnf("Convert to IEventData fail.")
+		return false
+	}
+	clog.Infof("EVENT Register: [%v]  ok", name)
 	funcList := p.funcMap[name]
 	funcList = append(funcList, fn)
 	p.funcMap[name] = funcList
+	return true
 }
 
 func (p *actorEvent) Registers(names []string, fn IEventFunc) {
 	for _, name := range names {
-		p.Register(name, fn)
+		funcList := p.funcMap[name]
+		funcList = append(funcList, fn)
+		p.funcMap[name] = funcList
 	}
 }
 
