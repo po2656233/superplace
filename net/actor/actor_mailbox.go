@@ -22,24 +22,21 @@ func newMailbox(name string) mailbox {
 	}
 }
 
-func (p *mailbox) Register(funcName string, fn interface{}) {
-	if funcName == "" || len(funcName) < 1 {
-		clog.Errorf("[%s] Func name is empty.", fn)
-		return
-	}
-
+// Register 函数指针,并以函数名作为注册
+func (p *mailbox) Register(fn interface{}) bool {
 	funcInfo, err := creflect.GetFuncInfo(fn)
 	if err != nil {
-		clog.Errorf("funcName = %s, err = %v", funcName, err)
-		return
+		clog.Errorf("funcName = %s, err = %v", funcInfo.Name, err)
+		return false
 	}
-
+	funcName := funcInfo.Name
 	if _, found := p.funcMap[funcName]; found {
 		clog.Errorf("funcName = %s, already exists.", funcName)
-		return
+		return false
 	}
-
+	clog.Infof("MailBox Register: [%s] ok", funcName)
 	p.funcMap[funcName] = &funcInfo
+	return true
 }
 
 func (p *mailbox) GetFuncInfo(funcName string) (*creflect.FuncInfo, bool) {

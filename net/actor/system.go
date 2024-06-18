@@ -185,7 +185,7 @@ func (p *System) Call(source, target, funcName string, arg interface{}) int32 {
 		remoteMsg.Target = target
 		remoteMsg.FuncName = funcName
 		remoteMsg.Args = arg
-
+		remoteMsg.ChanResult = make(chan interface{})
 		if !p.PostRemote(&remoteMsg) {
 			clog.Warnf("[Call] Post remote fail. [source = %s, target = %s, funcName = %s]", source, target, funcName)
 			return ccode.ActorCallFail
