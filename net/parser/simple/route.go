@@ -60,7 +60,14 @@ func DefaultDataRoute(agent *Agent, msg *Message, route *NodeRoute) {
 	}
 
 	targetPath := cfacade.NewPath(member.GetNodeId(), route.ActorID)
-	ClusterLocalDataRoute(agent, session, msg, route, member.GetNodeId(), targetPath)
+	if err := ClusterLocalDataRoute(agent, session, msg, route, member.GetNodeId(), targetPath); err != nil {
+		clog.Errorf("[sid = %s,uid = %d] Session post message err:%v.[route = %+v]",
+			agent.SID(),
+			agent.UID(),
+			err,
+			route,
+		)
+	}
 }
 
 func LocalDataRoute(agent *Agent, session *cproto.Session, msg *Message, nodeRoute *NodeRoute, targetPath string) {

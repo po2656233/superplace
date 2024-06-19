@@ -12,7 +12,7 @@ import (
 var (
 	NoneMessage        = Message{} // none message
 	headLength         = 8         // ID uint32(4 bytes) +  DataLen uint32(4 bytes)
-	dataLength  uint32 = 4096      // data length
+	msgMaxLen   uint32 = 4096      // data length
 )
 
 type Message struct {
@@ -65,7 +65,7 @@ func parseHeader(header []byte) (Message, error) {
 		return msg, err
 	}
 
-	if msg.Len > dataLength {
+	if msg.Len > msgMaxLen {
 		return msg, cerr.PacketSizeExceed
 	}
 
@@ -74,8 +74,14 @@ func parseHeader(header []byte) (Message, error) {
 
 func pack(mid uint32, data []byte) ([]byte, error) {
 	pkg := bytes.NewBuffer([]byte{})
-	binary.Write(pkg, endian, mid)
-	binary.Write(pkg, endian, uint32(len(data)))
-	binary.Write(pkg, endian, data)
+	if err := binary.Write(pkg, endian, mid); err != nil {
+		return nil, err
+	}
+	if err := binary.Write(pkg, endian, uint32(len(data))); err != nil {
+		return nil, err
+	}
+	if err := binary.Write(pkg, endian, data); err != nil {
+		return nil, err
+	}
 	return pkg.Bytes(), nil
 }

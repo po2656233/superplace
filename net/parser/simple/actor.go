@@ -103,6 +103,9 @@ func (p *actor) SetWriteBacklog(backlog int) {
 func (p *actor) SetEndian(e binary.ByteOrder) {
 	SetEndian(e)
 }
+func (p *actor) SetMsgMaxLen(size uint32) {
+	msgMaxLen = size
+}
 
 func (*actor) SetOnDataRoute(fn DataRouteFunc) {
 	if fn != nil {
