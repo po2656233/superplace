@@ -11,7 +11,11 @@ type ActorBase struct {
 	cactor.Base
 }
 
-func (p *ActorBase) Response(session *cproto.Session, mid uint32, v interface{}) {
+func (p *ActorBase) Response(session *cproto.Session, v interface{}) {
+	Response(p, session, session.Mid, v)
+}
+
+func (p *ActorBase) ResponseX(session *cproto.Session, mid uint32, v interface{}) {
 	Response(p, session, mid, v)
 }
 
