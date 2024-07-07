@@ -6,7 +6,7 @@ import (
 )
 
 func TestWalkFiles(t *testing.T) {
-	files := WalkFiles("../../examples/config/", ".json")
+	files := WalkFiles("/config/", ".json")
 
 	for _, file := range files {
 		fmt.Println(file)
@@ -14,7 +14,7 @@ func TestWalkFiles(t *testing.T) {
 }
 
 func TestReadDir(t *testing.T) {
-	files, err := ReadDir("../../examples/config/", "config-", ".json")
+	files, err := ReadDir("/config/", "config-", ".json")
 	if err != nil {
 		fmt.Println(err)
 		return
