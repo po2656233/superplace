@@ -1,4 +1,4 @@
-package viper
+package exViper
 
 import (
 	"encoding/json"
@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 	"gopkg.in/ini.v1"
 	"gopkg.in/yaml.v3"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -25,14 +26,15 @@ const (
 	INISuffix  = ".ini"
 )
 
+type SuperViper struct {
+	*viper.Viper
+	filePath string
+	data     interface{}
+}
 type ConfData map[string]interface{}
 
-var data = make(map[string]ConfData)
-var curPath = ""
-
-func InitViper(filePath string) {
+func NewViper(filePath string) *SuperViper {
 	viperCfg := viper.New()
-
 	strDir, fileName := filepath.Split(filePath)
 	if fileName == "" {
 		panic(fmt.Errorf("no include file:%v", filePath))
@@ -45,145 +47,107 @@ func InitViper(filePath string) {
 	suffix := filepath.Ext(fileName)
 	confName := strings.TrimSuffix(fileName, suffix)
 	viperCfg.SetConfigName(confName)
+	viperCfg.SetConfigFile(fileName)
 	if 1 < len(suffix) {
 		viperCfg.SetConfigType(suffix[1:])
 	}
 
-	err := viperCfg.ReadInConfig()
+	sv := &SuperViper{
+		Viper:    viperCfg,
+		filePath: filePath,
+		data:     make(map[string]interface{}),
+	}
+	err := sv.Viper.ReadInConfig()
 	if err != nil {
 		panic(err)
 	}
-	var confData ConfData
-	err = viperCfg.Unmarshal(&confData)
+	err = sv.Viper.Unmarshal(&sv.data)
 	if err != nil {
-		panic(err)
+		fmt.Printf("SuperViper Unmarshal err:%v", err)
 	}
 
-	viperCfg.WatchConfig()
-	viperCfg.OnConfigChange(func(e fsnotify.Event) {
+	sv.Viper.WatchConfig()
+	sv.Viper.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("OnConfigChange file changed:", e.Name)
-		if err = viperCfg.Unmarshal(&confData); err != nil {
+		if err := sv.Viper.Unmarshal(&sv.data); err != nil {
 			fmt.Println("OnConfigChange err:", err)
 			return
 		}
-		data[e.Name] = confData
 	})
-	data[filePath] = confData
-	curPath = filePath
+	return sv
 }
 
-func GetCurConfig() ConfData {
-	return GetViperConfig(curPath)
-}
-
-func GetViperConfig(filePath string) ConfData {
-	info, ok := data[filePath]
-	if !ok {
-		return nil
+func (sv *SuperViper) Unmarshal(rawVal any, opts ...viper.DecoderConfigOption) error {
+	if sv.Viper == nil {
+		return fmt.Errorf("no superviper obj! ")
 	}
-	return info
+	return sv.Viper.Unmarshal(rawVal, opts...)
 }
 
-func ToJson() error {
-	return toFile(JSONSuffix, func(fileName string, info ConfData) error {
-		file, err := os.Create(fileName)
-		if err != nil {
-			log.Println(err.Error())
-			return err
-		}
-
-		err = json.NewEncoder(file).Encode(info)
-		_ = file.Close()
-		return err
+func (sv *SuperViper) ToJson() error {
+	return sv.ToFile(JSONSuffix, func(file io.Writer, info interface{}) error {
+		return json.NewEncoder(file).Encode(info)
 	})
 }
-func ToYaml() error {
-	return toFile(YAMLSuffix, func(fileName string, info ConfData) error {
-		file, err := os.Create(fileName)
-		if err != nil {
-			log.Println(err.Error())
-			return err
-		}
-
-		err = yaml.NewEncoder(file).Encode(info)
-		_ = file.Close()
-		return err
+func (sv *SuperViper) ToYaml() error {
+	return sv.ToFile(YAMLSuffix, func(file io.Writer, info interface{}) error {
+		return yaml.NewEncoder(file).Encode(info)
 	})
 }
-func ToYml() error {
-	return toFile(YMLSuffix, func(fileName string, info ConfData) error {
-		file, err := os.Create(fileName)
-		if err != nil {
-			log.Println(err.Error())
-			return err
-		}
-
-		err = yaml.NewEncoder(file).Encode(info)
-		_ = file.Close()
-		return err
+func (sv *SuperViper) ToYml() error {
+	return sv.ToFile(YMLSuffix, func(file io.Writer, info interface{}) error {
+		return yaml.NewEncoder(file).Encode(info)
 	})
 }
-func ToToml() error {
-	return toFile(TOMLSuffix, func(fileName string, info ConfData) error {
-		file, err := os.Create(fileName)
-		if err != nil {
-			log.Println(err.Error())
-			return err
-		}
-		err = toml.NewEncoder(file).Encode(info)
-		if err != nil {
-			return err
-		}
-		_ = file.Close()
-		return err
+func (sv *SuperViper) ToToml() error {
+	return sv.ToFile(TOMLSuffix, func(file io.Writer, info interface{}) error {
+		return toml.NewEncoder(file).Encode(info)
 	})
 }
-func ToXml() error {
-	return toFile(XMLSuffix, func(fileName string, info ConfData) error {
-		file, err := os.Create(fileName)
-		if err != nil {
-			log.Println(err.Error())
-			return err
-		}
-		err = xml.NewEncoder(file).Encode(info)
-		if err != nil {
-			return err
-		}
-		_ = file.Close()
-		return err
+func (sv *SuperViper) ToXml() error {
+	return sv.ToFile(XMLSuffix, func(file io.Writer, info interface{}) error {
+		return xml.NewEncoder(file).Encode(info)
 	})
 }
-func ToIni() error {
-	return toFile(INISuffix, func(fileName string, info ConfData) error {
+func (sv *SuperViper) ToIni() error {
+	return sv.ToFile(INISuffix, func(file io.Writer, info interface{}) error {
 		// 创建一个INI文件对象
 		iniCfg := ini.Empty()
-		if err := parseMap(iniCfg, info, ""); err != nil {
-			return err
+		switch info.(type) {
+		case map[string]interface{}:
+			if err := parseMap(iniCfg, info.(map[string]interface{}), ""); err != nil {
+				return err
+			}
+		case string:
+			iniCfg.Section("").NewKey(info.(string), fmt.Sprintf("%v", info))
+		case map[interface{}]interface{}:
+			if err := parseMap2(iniCfg, info.(map[interface{}]interface{}), ""); err != nil {
+				return err
+			}
 		}
+
 		// 将INI内容写入缓冲区
-		file, err := os.Create(fileName)
-		if err != nil {
-			return err
-		}
-		if _, err = iniCfg.WriteTo(file); err != nil {
-			return err
-		}
-		return file.Close()
+		_, err := iniCfg.WriteTo(file)
+		return err
 	})
 }
-func toFile(ext string, f func(fileName string, info ConfData) error) error {
-	for fileName, configData := range data {
-		// TOMLEncodeIntoFile 将 v 对象编码成 TOML 格式配置并写入 filepath 文件
-		extension := path.Ext(fileName)
-		if extension == ext {
-			continue
-		}
-		fileName = strings.TrimSuffix(fileName, extension) + ext
-		err := f(fileName, configData)
-		if err != nil {
-			log.Printf("%v encode[%#v] failed: %v!!!!!!!!!!", ext, configData, err)
-			return err
-		}
+
+func (sv *SuperViper) ToFile(ext string, f func(file io.Writer, info interface{}) error) error {
+	extension := path.Ext(sv.filePath)
+	if extension == ext {
+		return nil
+	}
+	sv.filePath = strings.TrimSuffix(sv.filePath, extension) + ext
+	file, err := os.Create(sv.filePath)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		_ = file.Close()
+	}()
+	if err = f(file, sv.data); err != nil {
+		log.Printf("%v encode[%#v] failed: %v!!!!!!!!!!", ext, sv.data, err)
+		return err
 	}
 
 	return nil
@@ -195,9 +159,9 @@ func parseMap2(cfg *ini.File, m map[interface{}]any, parentSection interface{}) 
 	for k, v := range m {
 		switch v := v.(type) {
 		case map[interface{}]interface{}:
-			parseMap2(cfg, v, parentSection)
+			_ = parseMap2(cfg, v, parentSection)
 		case map[string]interface{}:
-			parseMap(cfg, v, k.(string))
+			_ = parseMap(cfg, v, k.(string))
 		default:
 			// 否则，处理为键值对
 			key, ok := k.(string)
@@ -225,7 +189,7 @@ func parseMap(cfg *ini.File, m map[string]interface{}, parentSection string) err
 	for k, v := range m {
 		switch v := v.(type) {
 		case map[interface{}]any:
-			parseMap2(cfg, v, parentSection)
+			_ = parseMap2(cfg, v, parentSection)
 		case map[string]interface{}:
 			// 如果是嵌套的map，则处理为新的section
 			sectionName := k
@@ -254,7 +218,7 @@ func parseMap(cfg *ini.File, m map[string]interface{}, parentSection string) err
 				for _, i2 := range vals {
 					valMap := make(map[string]interface{})
 					valMap[key] = i2
-					parseMap(cfg, valMap, parentSection)
+					_ = parseMap(cfg, valMap, parentSection)
 				}
 			} else {
 				_, err := cfg.Section(parentSection).NewKey(key, fmt.Sprintf("%v", v))
