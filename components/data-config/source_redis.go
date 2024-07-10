@@ -25,7 +25,9 @@ type (
 	}
 
 	redisConfig struct {
+		Network      string `json:"network"`       //  传输方式
 		Address      string `json:"address"`       // redis地址
+		Username     string `json:"username"`      // 名称
 		Password     string `json:"password"`      // 密码
 		DB           int    `json:"db"`            // db index
 		PrefixKey    string `json:"prefix_key"`    // 前缀
@@ -53,9 +55,11 @@ func (r *SourceRedis) Init(_ IDataConfig) {
 
 func (r *SourceRedis) newRedis() {
 	r.rdb = redis.NewClient(&redis.Options{
+		Username: r.Username,
 		Addr:     r.Address,
 		Password: r.Password,
 		DB:       r.DB,
+		Network:  r.Network,
 		OnConnect: func(ctx context.Context, cn *redis.Conn) error {
 			clog.Infof("base config for redis connected")
 			return nil
