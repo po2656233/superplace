@@ -42,10 +42,10 @@ func NewViper(filePath string) *SuperViper {
 	if strDir == "" {
 		strDir = "."
 	}
-	viperCfg.AddConfigPath(strDir)
-
 	suffix := filepath.Ext(fileName)
 	confName := strings.TrimSuffix(fileName, suffix)
+
+	viperCfg.AddConfigPath(strDir)
 	viperCfg.SetConfigName(confName)
 	viperCfg.SetConfigFile(fileName)
 	if 1 < len(suffix) {
