@@ -47,7 +47,7 @@ func NewViper(filePath string) *SuperViper {
 
 	viperCfg.AddConfigPath(strDir)
 	viperCfg.SetConfigName(confName)
-	viperCfg.SetConfigFile(fileName)
+	viperCfg.SetConfigFile(filePath)
 	if 1 < len(suffix) {
 		viperCfg.SetConfigType(suffix[1:])
 	}
