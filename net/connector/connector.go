@@ -2,10 +2,11 @@ package superConnector
 
 import (
 	"crypto/tls"
-	"net"
-
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
+	"github.com/xtaci/kcp-go"
+	"net"
+	"strings"
 )
 
 type (
@@ -61,6 +62,12 @@ func (p *Connector) Running() bool {
 
 func (p *Connector) GetListener(certFile, keyFile, address string) (net.Listener, error) {
 	var err error
+	if strings.Contains(address, "kcp") {
+		address = strings.Trim(address, "kcp")
+		p.listener, err = kcp.Listen(address)
+		return p.listener, err
+	}
+
 	if certFile == "" || keyFile == "" {
 		p.listener, err = net.Listen("tcp", address)
 		return p.listener, err
