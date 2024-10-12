@@ -308,7 +308,7 @@ func (a *Agent) SendMsg(message proto.Message) {
 	if onProtoFunc != nil {
 		mid, data, err := onProtoFunc(message)
 		if err != nil {
-			clog.Errorf("[sid = %s,uid = %d] SendProto fail. [mid = %d, message = %+v]",
+			clog.Errorf("Agent [sid = %s,uid = %d] SendMsg fail. [mid = %d, message = %+v]",
 				a.SID(),
 				a.UID(),
 				mid,
@@ -318,7 +318,7 @@ func (a *Agent) SendMsg(message proto.Message) {
 		}
 		a.sendPending(mid, data)
 		if clog.PrintLevel(zapcore.DebugLevel) {
-			clog.Debugf("[sid = %s,uid = %d] SendProto ok. [mid = %d, message = %+v]",
+			clog.Debugf("Agent [sid = %s,uid = %d] SendMsg ok. [mid = %d, message = %+v]",
 				a.SID(),
 				a.UID(),
 				mid,

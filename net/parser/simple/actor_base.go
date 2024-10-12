@@ -5,10 +5,36 @@ import (
 	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
 	cproto "github.com/po2656233/superplace/net/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 type ActorBase struct {
 	cactor.Base
+	session *cproto.Session
+}
+
+func (p *ActorBase) SendMsg(message proto.Message) {
+	if onProtoFunc != nil {
+		mid, data, err := onProtoFunc(message)
+		if err != nil {
+			clog.Errorf("[sid = %s,uid = %d] SendMsg fail. [mid = %d, message = %+v]",
+				p.session.Sid,
+				p.session.Uid,
+				mid,
+				message,
+			)
+			return
+		}
+		rsp := &cproto.PomeloResponse{
+			Sid:  p.session.Sid,
+			Mid:  mid,
+			Data: data,
+		}
+
+		p.Call(p.session.AgentPath, ResponseFuncName, rsp)
+	} else {
+		clog.Panicf("Did you forget to set SetParseProtoFunc???")
+	}
 }
 
 func (p *ActorBase) Response(session *cproto.Session, v interface{}) {
