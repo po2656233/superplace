@@ -115,11 +115,6 @@ func (*actor) SetOnDataRoute(fn DataRouteFunc) {
 		onDataRouteFunc = fn
 	}
 }
-func (a *actor) SetParseProtoFunc(protoFunc ParseProtoFunc) {
-	if protoFunc != nil {
-		onProtoFunc = protoFunc
-	}
-}
 
 func (p *actor) response(rsp *cproto.PomeloResponse) {
 	agent, found := GetAgent(rsp.Sid)

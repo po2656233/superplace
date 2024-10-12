@@ -29,7 +29,9 @@ func AddNodeRoute(mid uint32, nodeRoute *NodeRoute) {
 
 	nodeRouteMap[mid] = nodeRoute
 }
-
+func SetParseProtoFunc(protoFunc ParseProtoFunc) {
+	onProtoFunc = protoFunc
+}
 func GetNodeRoute(mid uint32) (*NodeRoute, bool) {
 	routeActor, found := nodeRouteMap[mid]
 	return routeActor, found
