@@ -2,6 +2,7 @@ package simple
 
 import (
 	"fmt"
+	"google.golang.org/protobuf/proto"
 	"net"
 	"sync/atomic"
 	"time"
@@ -30,6 +31,7 @@ type (
 		chWrite              chan []byte          // push bytes queue
 		lastAt               int64                // last heartbeat unix time stamp
 		onCloseFunc          []OnCloseFunc        // on close agent
+		parseProtoFunc       ParseProtoFunc       // --Unnecessary--
 	}
 
 	pendingMessage struct {
@@ -37,7 +39,8 @@ type (
 		payload interface{}
 	}
 
-	OnCloseFunc func(*Agent)
+	ParseProtoFunc func(message proto.Message) (uint32, []byte, error)
+	OnCloseFunc    func(*Agent)
 )
 
 func NewAgent(app cfacade.IApplication, conn net.Conn, session *cproto.Session) Agent {
@@ -66,6 +69,10 @@ func NewAgent(app cfacade.IApplication, conn net.Conn, session *cproto.Session) 
 	}
 
 	return agent
+}
+
+func (a *Agent) SetProtoParseFunc(protoFunc ParseProtoFunc) {
+	a.parseProtoFunc = protoFunc
 }
 
 func (a *Agent) State() int32 {
@@ -301,6 +308,31 @@ func (a *Agent) sendPending(mid uint32, payload interface{}) {
 	}
 
 	a.chPending <- pending
+}
+
+func (a *Agent) SendMsg(message proto.Message) {
+	if a.parseProtoFunc != nil {
+		mid, data, err := a.parseProtoFunc(message)
+		if err != nil {
+			clog.Errorf("[sid = %s,uid = %d] SendProto fail. [mid = %d, message = %+v]",
+				a.SID(),
+				a.UID(),
+				mid,
+				message,
+			)
+			return
+		}
+		a.sendPending(mid, data)
+		if clog.PrintLevel(zapcore.DebugLevel) {
+			clog.Debugf("[sid = %s,uid = %d] SendProto ok. [mid = %d, message = %+v]",
+				a.SID(),
+				a.UID(),
+				mid,
+				message,
+			)
+		}
+
+	}
 }
 
 func (a *Agent) Response(mid uint32, v interface{}) {
