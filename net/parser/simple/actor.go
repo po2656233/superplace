@@ -2,6 +2,7 @@ package simple
 
 import (
 	"encoding/binary"
+	"google.golang.org/protobuf/proto"
 	"net"
 	"time"
 
@@ -19,9 +20,11 @@ type (
 		agentActorID   string
 		connectors     []cfacade.IConnector
 		onNewAgentFunc OnNewAgentFunc
+		parseProtoFunc ParseProtoFunc // --Unnecessary--
 	}
 
 	OnNewAgentFunc func(newAgent *Agent)
+	ParseProtoFunc func(message proto.Message) (uint32, []byte, error)
 )
 
 func NewActor(agentActorID string) *actor {
@@ -110,6 +113,11 @@ func (p *actor) SetMsgMaxLen(size uint32) {
 func (*actor) SetOnDataRoute(fn DataRouteFunc) {
 	if fn != nil {
 		onDataRouteFunc = fn
+	}
+}
+func (a *actor) SetParseProtoFunc(protoFunc ParseProtoFunc) {
+	if protoFunc != nil {
+		onProtoFunc = protoFunc
 	}
 }
 

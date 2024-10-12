@@ -9,6 +9,7 @@ import (
 var (
 	nodeRouteMap    = map[uint32]*NodeRoute{}
 	onDataRouteFunc = DefaultDataRoute
+	onProtoFunc     ParseProtoFunc
 )
 
 type (

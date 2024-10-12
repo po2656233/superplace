@@ -31,7 +31,6 @@ type (
 		chWrite              chan []byte          // push bytes queue
 		lastAt               int64                // last heartbeat unix time stamp
 		onCloseFunc          []OnCloseFunc        // on close agent
-		parseProtoFunc       ParseProtoFunc       // --Unnecessary--
 	}
 
 	pendingMessage struct {
@@ -39,8 +38,7 @@ type (
 		payload interface{}
 	}
 
-	ParseProtoFunc func(message proto.Message) (uint32, []byte, error)
-	OnCloseFunc    func(*Agent)
+	OnCloseFunc func(*Agent)
 )
 
 func NewAgent(app cfacade.IApplication, conn net.Conn, session *cproto.Session) Agent {
@@ -69,10 +67,6 @@ func NewAgent(app cfacade.IApplication, conn net.Conn, session *cproto.Session) 
 	}
 
 	return agent
-}
-
-func (a *Agent) SetProtoParseFunc(protoFunc ParseProtoFunc) {
-	a.parseProtoFunc = protoFunc
 }
 
 func (a *Agent) State() int32 {
@@ -311,8 +305,8 @@ func (a *Agent) sendPending(mid uint32, payload interface{}) {
 }
 
 func (a *Agent) SendMsg(message proto.Message) {
-	if a.parseProtoFunc != nil {
-		mid, data, err := a.parseProtoFunc(message)
+	if onProtoFunc != nil {
+		mid, data, err := onProtoFunc(message)
 		if err != nil {
 			clog.Errorf("[sid = %s,uid = %d] SendProto fail. [mid = %d, message = %+v]",
 				a.SID(),
@@ -331,7 +325,8 @@ func (a *Agent) SendMsg(message proto.Message) {
 				message,
 			)
 		}
-
+	} else {
+		clog.Panicf("Did you forget to set SetParseProtoFunc???")
 	}
 }
 
