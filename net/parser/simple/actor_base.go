@@ -13,6 +13,12 @@ type ActorBase struct {
 	session *cproto.Session
 }
 
+// SetSession 设置节点信息
+func (p *ActorBase) SetSession(session *cproto.Session) {
+	p.session = session
+}
+
+// SendMsg 发送消息
 func (p *ActorBase) SendMsg(message proto.Message) {
 	if onProtoFunc != nil {
 		mid, data, err := onProtoFunc(message)
@@ -37,14 +43,31 @@ func (p *ActorBase) SendMsg(message proto.Message) {
 	}
 }
 
+// Response 响应
 func (p *ActorBase) Response(session *cproto.Session, v interface{}) {
 	Response(p, session, session.Mid, v)
 }
 
-func (p *ActorBase) ResponseX(session *cproto.Session, mid uint32, v interface{}) {
-	Response(p, session, mid, v)
+// Feedback 反馈
+func (p *ActorBase) Feedback(v interface{}) {
+	if onProtoFunc != nil {
+		p.SendMsg(v.(proto.Message))
+		return
+	}
+	data, err := p.App().Serializer().Marshal(v)
+	if err != nil {
+		clog.Warnf("[Feedback] Marshal error. v = %+v", v)
+		return
+	}
+	rsp := &cproto.PomeloResponse{
+		Sid:  p.session.Sid,
+		Mid:  p.session.Mid,
+		Data: data,
+	}
+	p.Call(p.session.AgentPath, ResponseFuncName, rsp)
 }
 
+// Response 响应
 func Response(iActor cfacade.IActor, session *cproto.Session, mid uint32, v interface{}) {
 	data, err := iActor.App().Serializer().Marshal(v)
 	if err != nil {
