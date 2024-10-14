@@ -47,6 +47,7 @@ type (
 		event            *actorEvent           // event
 		child            *actorChild           // child actor
 		timer            *actorTimer           // timer
+		sid              string                // SID
 		lastAt           int64                 // last process time
 		arrivalElapsed   int64                 // arrival elapsed for message
 		executionElapsed int64                 // execution elapsed for message
@@ -180,7 +181,9 @@ func (p *Actor) invokeFunc(mb *mailbox, app cfacade.IApplication, fn cfacade.Inv
 		)
 		return
 	}
-
+	if m.Session != nil {
+		p.sid = m.Session.Sid
+	}
 	p.arrivalElapsed = m.PostTime - m.BuildTime
 	if p.arrivalElapsed > p.system.arrivalTimeOut {
 		clog.Warnf("[%s] Invoke timeout.[path = %s -> %s -> %s, postTime = %d, buildTime = %d, arrival = %dms]",
@@ -299,6 +302,10 @@ func (p *Actor) Path() *cfacade.ActorPath {
 
 func (p *Actor) PathString() string {
 	return p.path.String()
+}
+
+func (p *Actor) SID() string {
+	return p.sid
 }
 
 func (p *Actor) Call(targetPath, funcName string, arg interface{}) int32 {
