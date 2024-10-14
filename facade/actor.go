@@ -28,6 +28,7 @@ type (
 		App() IApplication
 		ActorID() string
 		Path() *ActorPath
+		SID() string
 		Call(targetPath, funcName string, arg interface{}) int32
 		CallWait(targetPath, funcName string, arg, reply interface{}) int32
 		PostRemote(m *Message)
