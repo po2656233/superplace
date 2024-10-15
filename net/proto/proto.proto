@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/cherry-game/cherry/net/proto/proto;cherryProto";
+option go_package = "github.com/cherry-game/cherry/net/proto/proto;superProto";
 
 package superProto;
 
@@ -44,6 +44,13 @@ message Session {
   string ip = 4;                  // ip address
   uint32 mid = 5;                 // message id build by client
   map<string, string> data = 7;   // extend data
+}
+
+message SimpleRequest {
+  string sid = 1;
+  int64 uid = 2;
+  uint32 mid = 3;
+  bytes data = 4;
 }
 
 message PomeloResponse {

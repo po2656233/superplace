@@ -43,6 +43,7 @@ func NewActor(agentActorID string) *actor {
 // OnInit Actor初始化前触发该函数
 func (p *actor) OnInit() {
 	p.Remote().Register(p.response)
+	p.Remote().Register(p.request)
 }
 
 func (p *actor) Load(app cfacade.IApplication) {
@@ -114,6 +115,24 @@ func (*actor) SetOnDataRoute(fn DataRouteFunc) {
 	if fn != nil {
 		onDataRouteFunc = fn
 	}
+}
+
+func (p *actor) request(req *cproto.SimpleRequest) {
+	var agent *Agent
+	var found bool
+	if req.Sid != "" {
+		agent, found = GetAgent(req.Sid)
+	} else {
+		agent, found = GetAgentWithUID(req.Uid)
+	}
+	if !found {
+		if clog.PrintLevel(zapcore.DebugLevel) {
+			clog.Debugf("[request] Not found agent. [rsp = %+v]", req)
+		}
+		return
+	}
+
+	agent.Response(req.Mid, req.Data)
 }
 
 func (p *actor) response(rsp *cproto.PomeloResponse) {

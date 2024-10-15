@@ -1,6 +1,7 @@
 package simple
 
 import (
+	. "github.com/po2656233/superplace/const"
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
@@ -103,12 +104,13 @@ func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
 			)
 			return
 		}
-		rsp := &cproto.PomeloResponse{
+		rsp := &cproto.SimpleRequest{
 			Sid:  session.Sid,
+			Uid:  session.Uid,
 			Mid:  mid,
 			Data: data,
 		}
-		iActor.Call(session.AgentPath, ResponseFuncName, rsp)
+		iActor.Call(session.AgentPath, RequestFuncName, rsp)
 		return
 	}
 
@@ -118,13 +120,14 @@ func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
 		return
 	}
 
-	rsp := &cproto.PomeloResponse{
+	rsp := &cproto.SimpleRequest{
 		Sid:  session.Sid,
+		Uid:  session.Uid,
 		Mid:  session.Mid,
 		Data: data,
 	}
 
-	iActor.Call(session.AgentPath, ResponseFuncName, rsp)
+	iActor.Call(session.AgentPath, RequestFuncName, rsp)
 }
 
 // Response 响应

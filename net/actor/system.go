@@ -10,6 +10,8 @@ import (
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cproto "github.com/po2656233/superplace/net/proto"
+
+	. "github.com/po2656233/superplace/const"
 )
 
 type (

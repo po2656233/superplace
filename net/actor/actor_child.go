@@ -1,10 +1,10 @@
 package superActor
 
 import (
+	. "github.com/po2656233/superplace/const"
+	cfacade "github.com/po2656233/superplace/facade"
 	"strings"
 	"sync"
-
-	cfacade "github.com/po2656233/superplace/facade"
 )
 
 type actorChild struct {

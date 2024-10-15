@@ -5,10 +5,6 @@ import (
 	"time"
 )
 
-const (
-	ResponseFuncName = "response"
-)
-
 var (
 	heartbeatTime                  = time.Second * 60 // second
 	writeBacklog                   = 64               // backlog size
