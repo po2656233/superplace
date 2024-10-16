@@ -170,7 +170,12 @@ func (p *Cluster) remoteProcess() {
 			message.ClusterReply = natsMsg
 		}
 
-		p.app.ActorSystem().PostRemote(&message)
+		if !p.app.ActorSystem().PostRemote(&message) {
+			clog.Warnf("[remoteProcess]  PostRemote [subject = %s,  message = %v.]",
+				natsMsg.Subject,
+				message,
+			)
+		}
 	}
 
 	for msg := range p.remote.ch {
