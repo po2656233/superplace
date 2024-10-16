@@ -251,7 +251,7 @@ func (p *System) CallWait(source, target, funcName string, arg interface{}, repl
 			}
 			clusterPacket.ArgBytes = argsBytes
 		}
-
+		clog.Infof("[CallWait]targetPath:%v sourcePath:%v, clusterPacket:%v", targetPath, sourcePath, clusterPacket)
 		rsp := p.app.Cluster().RequestRemote(targetPath.NodeID, clusterPacket, p.callTimeout)
 		if ccode.IsFail(rsp.Code) {
 			return rsp.Code
