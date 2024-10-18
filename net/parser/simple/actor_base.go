@@ -2,6 +2,7 @@ package simple
 
 import (
 	. "github.com/po2656233/superplace/const"
+	code2 "github.com/po2656233/superplace/const/code"
 	cfacade "github.com/po2656233/superplace/facade"
 	clog "github.com/po2656233/superplace/logger"
 	cactor "github.com/po2656233/superplace/net/actor"
@@ -38,7 +39,9 @@ func (p *ActorBase) SendMsg(message proto.Message) {
 			Data: data,
 		}
 
-		p.Call(p.session.AgentPath, ResponseFuncName, rsp)
+		if code := p.Call(p.session.AgentPath, ResponseFuncName, rsp); code != code2.OK {
+			clog.Warnf("[Response] Call error. code: %v", code)
+		}
 	} else {
 		clog.Panicf("Did you forget to set SetParseProtoFunc???")
 	}
@@ -62,7 +65,9 @@ func (p *ActorBase) SendTo(sid string, message proto.Message) {
 			Data: data,
 		}
 
-		p.Call(p.session.AgentPath, ResponseFuncName, rsp)
+		if code := p.Call(p.session.AgentPath, ResponseFuncName, rsp); code != code2.OK {
+			clog.Warnf("[Response] Call error. code: %v", code)
+		}
 	} else {
 		clog.Panicf("Did you forget to set SetParseProtoFunc???")
 	}
@@ -89,7 +94,9 @@ func (p *ActorBase) Feedback(v interface{}) {
 		Mid:  p.session.Mid,
 		Data: data,
 	}
-	p.Call(p.session.AgentPath, ResponseFuncName, rsp)
+	if code := p.Call(p.session.AgentPath, ResponseFuncName, rsp); code != code2.OK {
+		clog.Warnf("[Response] Call error. code: %v", code)
+	}
 }
 
 func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
@@ -110,7 +117,9 @@ func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
 			Mid:  mid,
 			Data: data,
 		}
-		iActor.Call(session.AgentPath, RequestFuncName, rsp)
+		if code := iActor.Call(session.AgentPath, RequestFuncName, rsp); code != code2.OK {
+			clog.Warnf("[Response] Call error. code: %v", code)
+		}
 		return
 	}
 
@@ -127,7 +136,9 @@ func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
 		Data: data,
 	}
 
-	iActor.Call(session.AgentPath, RequestFuncName, rsp)
+	if code := iActor.Call(session.AgentPath, RequestFuncName, rsp); code != code2.OK {
+		clog.Warnf("[Response] Call error. code: %v", code)
+	}
 }
 
 // Response 响应
@@ -144,5 +155,7 @@ func Response(iActor cfacade.IActor, session *cproto.Session, mid uint32, v inte
 		Data: data,
 	}
 
-	iActor.Call(session.AgentPath, ResponseFuncName, rsp)
+	if code := iActor.Call(session.AgentPath, ResponseFuncName, rsp); code != code2.OK {
+		clog.Warnf("[Response] Call error. code: %v", code)
+	}
 }
