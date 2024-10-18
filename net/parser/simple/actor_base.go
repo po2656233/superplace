@@ -23,7 +23,7 @@ func (p *ActorBase) SetSession(session *cproto.Session) {
 // SendMsg 发送消息
 func (p *ActorBase) SendMsg(message proto.Message) {
 	if onProtoFunc != nil {
-		mid, data, err := onProtoFunc(message)
+		mid, _, err := onProtoFunc(message)
 		if err != nil {
 			clog.Errorf("[sid = %s,uid = %d] SendMsg fail. [mid = %d, message = %+v]",
 				p.session.Sid,
@@ -33,6 +33,7 @@ func (p *ActorBase) SendMsg(message proto.Message) {
 			)
 			return
 		}
+		data, _ := p.App().Serializer().Marshal(message)
 		rsp := &cproto.PomeloResponse{
 			Sid:  p.session.Sid,
 			Mid:  mid,
@@ -49,7 +50,7 @@ func (p *ActorBase) SendMsg(message proto.Message) {
 
 func (p *ActorBase) SendTo(sid string, message proto.Message) {
 	if onProtoFunc != nil {
-		mid, data, err := onProtoFunc(message)
+		mid, _, err := onProtoFunc(message)
 		if err != nil {
 			clog.Errorf("[sid = %s,uid = %d] SendMsg fail. [mid = %d, message = %+v]",
 				sid,
@@ -59,6 +60,7 @@ func (p *ActorBase) SendTo(sid string, message proto.Message) {
 			)
 			return
 		}
+		data, err := p.App().Serializer().Marshal(message)
 		rsp := &cproto.PomeloResponse{
 			Sid:  sid,
 			Mid:  mid,
@@ -101,7 +103,7 @@ func (p *ActorBase) Feedback(v interface{}) {
 
 func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
 	if onProtoFunc != nil {
-		mid, data, err := onProtoFunc(v.(proto.Message))
+		mid, _, err := onProtoFunc(v.(proto.Message))
 		if err != nil {
 			clog.Errorf("[sid = %s,uid = %d] SendMsg fail. [mid = %d, message = %+v]",
 				session.Sid,
@@ -111,6 +113,7 @@ func SendTo(iActor cfacade.IActor, session *cproto.Session, v interface{}) {
 			)
 			return
 		}
+		data, err := iActor.App().Serializer().Marshal(v)
 		rsp := &cproto.SimpleRequest{
 			Sid:  session.Sid,
 			Uid:  session.Uid,
